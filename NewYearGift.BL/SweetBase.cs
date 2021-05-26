@@ -5,7 +5,7 @@ namespace NewYearGift.BL
     /// <summary>
     /// Базовый класс сладости
     /// </summary>
-    abstract class SweetBase
+    public abstract class SweetBase
     {
         private string _name;
         private string _manufacturer;
