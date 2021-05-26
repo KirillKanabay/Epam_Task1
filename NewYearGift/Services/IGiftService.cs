@@ -24,7 +24,7 @@ namespace NewYearGift.Services
         /// Метод добавляющий подарок
         /// </summary>
         /// <returns>Возвращает последнюю добавленный подарок</returns>
-        Gift Add();
+        Gift Add(Gift gift);
 
         /// <summary>
         /// Метод обновляющий подарок

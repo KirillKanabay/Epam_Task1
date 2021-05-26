@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using NewYearGift.Controllers;
+using NewYearGift.Helpers;
 using NewYearGift.Models;
+using NewYearGift.Services;
+using NewYearGift.Views;
 
 namespace NewYearGift
 {
@@ -14,16 +18,33 @@ namespace NewYearGift
             new Lollipop("Леденец", "Коммунарка", weight: 8d, sugarWeight: 6d, price: 0.22m, "Мята"),
             new Lollipop("Леденец", "Коммунарка", weight: 8d, sugarWeight: 6d, price: 0.22m, "Барбарис"),
         };
+
         private static Gift _gift;
+
+        private static ISweetService _sweetService;
+        private static IGiftService _giftService;
+        private static GiftView _giftView;
+        private static SweetView _sweetView;
+        private static GiftController _giftController;
+        private static SweetController _sweetController;
+        private static void InitDependencies()
+        {
+            _giftService = new GiftInMemoryService();
+            _sweetService = new SweetInMemoryService();
+
+            _giftController = new GiftController(_giftService);
+            _sweetController = new SweetController(_sweetService);
+
+            _giftView = new GiftView(_giftController);
+            _sweetView = new SweetView(_sweetController);
+        }
+        
         static void Main(string[] args)
         {
+            InitDependencies();
             Console.Title = "Сборщик новогодних подарков";
-            GiftInit();
-            Console.Title = $"Сборщик новогодних подарков: {_gift.Name}";
-
-            Console.Clear();
-            PrintHelp();
-
+            Clear();
+            ShowHelp();
             while (true)
             {
                 try
@@ -34,57 +55,25 @@ namespace NewYearGift
                 }
                 catch (Exception e)
                 {
-                    WriteError(e.Message);
+                    ConsoleExtensions.WriteError(e.Message);
                 }
             }
         }
-
-        /// <summary>
-        /// Инициализация подарка
-        /// </summary>
-        private static void GiftInit()
+        public static void Clear()
         {
-            while (_gift == null)
-            {
-                try
-                {
-                    Console.Write("Введите название подарка: ");
-                    string giftName = Console.ReadLine();
-                    _gift = new Gift(giftName);
-                }
-                catch (Exception e)
-                {
-                    WriteError(e.Message);
-                }
-            }
+            Console.Clear();
+            Console.WriteLine("==== Сборщик новогодних подарков. Введите help - для справки ====");
         }
-        /// <summary>
-        /// Метод выводящий ошибку
-        /// </summary>
-        /// <param name="error">Ошибка</param>
-        private static void WriteError(string error)
-        {
-            var defaultConsoleForeground = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Red;
 
-            Console.WriteLine(error);
-
-            Console.ForegroundColor = defaultConsoleForeground;
-        }
         /// <summary>
         /// Метод выводящий справку
         /// </summary>
-        private static void PrintHelp()
+        private static void ShowHelp()
         {
+            Clear();
             Console.WriteLine($"Доступные команды: {Environment.NewLine}" +
-                              $"Справка: help {Environment.NewLine}" +
-                              $"Просмотреть подарок: view-gift {Environment.NewLine}" +
-                              $"Отсортировать конфеты в подарке: order-gift {Environment.NewLine}" +
-                              $"Просмотреть список доступных конфет: view-sweets {Environment.NewLine}" +
-                              $"Добавить конфеты: add-sweets {Environment.NewLine}" +
-                              $"Найти конфету в подарке, соответствующую заданному диапазону содержания сахара: find-sweet-sugar{Environment.NewLine}" +
-                              $"Закончить работы: exit {Environment.NewLine}"
-            );
+                              $"Управление подарками: gifts {Environment.NewLine}" +
+                              $"Управление сладостями: sweets {Environment.NewLine}");
         }
         /// <summary>
         /// Метод выполняющий введенные команды
@@ -96,23 +85,13 @@ namespace NewYearGift
             {
                 case "help":
                     Console.Clear();
-                    PrintHelp();
+                    ShowHelp();
                     break;
-                case "view-gift":
-                    Console.Clear();
-                    ViewGift();
+                case "gifts":
+                    _giftView.Show();
                     break;
-                case "view-sweets":
-                    Console.Clear();
-                    PrintSweetsList();
-                    break;
-                case "add-sweets":
-                    Console.Clear();
-                    AddSweetsToGift();
-                    break;
-                case "find-sweet-sugar":
-                    Console.Clear();
-                    FindSweetBySugar();
+                case "sweets":
+                    _sweetView.Show();
                     break;
                 case "exit":
                     Environment.Exit(0);
@@ -121,16 +100,7 @@ namespace NewYearGift
                     throw new ArgumentException("Введенной команды не существует. Введите help для помощи.");
             }
         }
-        /// <summary>
-        /// Метод выводящий информацию о подарке
-        /// </summary>
-        private static void ViewGift()
-        {
-            Console.WriteLine(_gift);
-        }
-        /// <summary>
-        /// Метод выводящий список конфет 
-        /// </summary>
+        
         private static void PrintSweetsList()
         {
             Console.WriteLine("Список доступных сладостей:");
@@ -158,7 +128,7 @@ namespace NewYearGift
                 }
                 if (sweetId < 0 && sweetId >= SweetsList.Count)
                 {
-                    WriteError("Такой конфеты не существует");
+                    ConsoleExtensions.WriteError("Такой конфеты не существует");
                     continue;
                 }
 
@@ -166,7 +136,7 @@ namespace NewYearGift
                 int count = int.Parse(Console.ReadLine());
                 if (count <= 0)
                 {
-                    WriteError("Количество добавляемых конфет не может быть меньше или равно нулю.");
+                    ConsoleExtensions.WriteError("Количество добавляемых конфет не может быть меньше или равно нулю.");
                     continue;
                 }
 

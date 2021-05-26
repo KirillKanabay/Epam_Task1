@@ -3,7 +3,7 @@ using NewYearGift.Models;
 
 namespace NewYearGift.Services
 {
-    public class GiftInMemoryService
+    public class GiftInMemoryService:IGiftService
     {
         private readonly List<Gift> _giftsList = new List<Gift>();
         public List<Gift> GetAll() => _giftsList;

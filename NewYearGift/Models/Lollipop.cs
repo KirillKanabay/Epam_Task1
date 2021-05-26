@@ -30,6 +30,8 @@ namespace NewYearGift.Models
             Flavor = flavor;
         }
 
+        public Lollipop() {}
+
         public override string ToString()
         {
             return

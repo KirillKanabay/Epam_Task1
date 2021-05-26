@@ -106,5 +106,7 @@ namespace NewYearGift.Models
             SugarWeight = sugarWeight;
             Price = price;
         }
+
+        protected Sweet(){}
     }
 }

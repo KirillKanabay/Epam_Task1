@@ -26,6 +26,8 @@ namespace NewYearGift.Models
             }
         }
 
+        public ChocolateSweet() { }
+
         public ChocolateSweet(string name, string manufacturer, double weight, double sugarWeight, decimal price,
             string kindOfChocolate)
             : base(name, manufacturer, weight, sugarWeight, price)
