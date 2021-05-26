@@ -18,22 +18,47 @@ namespace NewYearGift.Services
 
         public List<Sweet> GetAll() => _sweetsList;
 
-        public Sweet GetById(int id) => _sweetsList[id];
+        public Sweet GetById(int id)
+        {
+            if (id < 0 || id >= _sweetsList.Count)
+            {
+                throw new ArgumentException("Такой сладости не существует.", nameof(id));
+            }
+
+            return _sweetsList[id];
+        } 
 
         public Sweet Add(Sweet sweet)
         {
+            if (sweet == null)
+            {
+                throw new ArgumentNullException(nameof(sweet), "Сладость не может быть null");
+            }
             _sweetsList.Add(sweet);
             return sweet;
         }
 
         public Sweet Update(int id, Sweet sweet)
         {
+            if (id < 0 || id >= _sweetsList.Count)
+            {
+                throw new ArgumentException("Такой сладости не существует.", nameof(id));
+            }
+            if (sweet == null)
+            {
+                throw new ArgumentNullException(nameof(sweet), "Сладость не может быть null");
+            }
             _sweetsList[id] = sweet;
             return sweet;
         }
 
         public Sweet Delete(int id)
         {
+            if (id < 0 || id >= _sweetsList.Count)
+            {
+                throw new ArgumentException("Такой сладости не существует.", nameof(id));
+            }
+
             var deletedSweet = _sweetsList[id];
             _sweetsList.RemoveAt(id);
             return deletedSweet;

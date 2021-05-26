@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using NewYearGift.Controllers;
 using NewYearGift.Helpers;
 using NewYearGift.Models;
