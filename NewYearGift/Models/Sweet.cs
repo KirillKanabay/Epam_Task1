@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace NewYearGift.BL
+namespace NewYearGift.Models
 {
     /// <summary>
     /// Базовый класс сладости
     /// </summary>
-    public abstract class SweetBase
+    public abstract class Sweet
     {
         private string _name;
         private string _manufacturer;
@@ -98,7 +98,7 @@ namespace NewYearGift.BL
             }
         }
 
-        protected SweetBase(string name, string manufacturer, double weight, double sugarWeight, decimal price)
+        protected Sweet(string name, string manufacturer, double weight, double sugarWeight, decimal price)
         {
             Name = name;
             Manufacturer = manufacturer;

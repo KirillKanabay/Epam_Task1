@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace NewYearGift.BL
+namespace NewYearGift.BL.Sweets
 {
     /// <summary>
     /// Класс леденца
@@ -30,6 +28,12 @@ namespace NewYearGift.BL
         public Lollipop(string name, string manufacturer, double weight, double sugarWeight, decimal price, string flavor) : base(name, manufacturer, weight, sugarWeight, price)
         {
             Flavor = flavor;
+        }
+
+        public override string ToString()
+        {
+            return
+                $"Леденец: {Name}, Производитель: {Manufacturer}, Вес: {Weight} г., Кол-во сахара: {SugarWeight} г., Стоимость: {Price:C1}, Ароматизатор: {Flavor}";
         }
     }
 }

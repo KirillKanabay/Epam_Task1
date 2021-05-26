@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace NewYearGift.BL
+namespace NewYearGift.Models
 {
     /// <summary>
     /// Класс шоколадной конфеты
     /// </summary>
-    public class ChocolateSweet:SweetBase
+    public class ChocolateSweet : Sweet
     {
         private string _kindOfChocolate;
 
@@ -28,10 +26,17 @@ namespace NewYearGift.BL
             }
         }
 
-        public ChocolateSweet(string name, string manufacturer, double weight, double sugarWeight, decimal price, string kindOfChocolate) 
+        public ChocolateSweet(string name, string manufacturer, double weight, double sugarWeight, decimal price,
+            string kindOfChocolate)
             : base(name, manufacturer, weight, sugarWeight, price)
         {
             KindOfChocolate = kindOfChocolate;
+        }
+
+        public override string ToString()
+        {
+            return
+                $"Шоколадная конфета: {Name}, Производитель: {Manufacturer}, Вес: {Weight} г., Кол-во сахара: {SugarWeight} г., Стоимость: {Price:C1}, Шоколад: {KindOfChocolate}";
         }
     }
 }

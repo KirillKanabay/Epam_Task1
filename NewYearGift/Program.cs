@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Channels;
-using NewYearGift.BL;
-using NewYearGift.BL.Sweets;
+using NewYearGift.Models;
 
-namespace NewYearGift.View
+namespace NewYearGift
 {
     class Program
     {
-        private static readonly List<SweetBase> SweetsList = new List<SweetBase>()
+        private static readonly List<Sweet> SweetsList = new List<Sweet>()
         {
             new ChocolateSweet("Ромашка", "Коммунарка", weight: 10.4d, sugarWeight: 4.2d, price: 0.50m, "Молочный"),
             new ChocolateSweet("Черемуха", "Коммунарка", weight: 12.4d, sugarWeight: 3.5d, price: 0.45m, "Темный"),
@@ -68,9 +66,9 @@ namespace NewYearGift.View
         {
             var defaultConsoleForeground = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Red;
-            
+
             Console.WriteLine(error);
-            
+
             Console.ForegroundColor = defaultConsoleForeground;
         }
         /// <summary>
@@ -152,7 +150,7 @@ namespace NewYearGift.View
                 PrintSweetsList();
                 Console.WriteLine();
                 Console.Write("Введите id добавляемой конфеты (-1 для выхода):");
-                
+
                 int sweetId = int.Parse(Console.ReadLine());
                 if (sweetId == -1)
                 {
@@ -185,8 +183,8 @@ namespace NewYearGift.View
                               $"4. Количеству сахара{Environment.NewLine}" +
                               $"5. Стоимости{Environment.NewLine}" +
                               $"6. Количеству.{Environment.NewLine}");
-            }
-        
+        }
+
         /// <summary>
         /// Метод находящий конфету в подарке по диапазону содержания сахара
         /// </summary>

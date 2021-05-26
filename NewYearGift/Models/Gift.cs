@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NewYearGift.BL.Sweets;
 
-namespace NewYearGift.BL
+namespace NewYearGift.Models
 {
     /// <summary>
     /// Класс подарка
@@ -16,7 +15,7 @@ namespace NewYearGift.BL
         /// <summary>
         /// Словарь хранит конфету и их количество
         /// </summary>
-        private Dictionary<SweetBase, int> _sweets;
+        private Dictionary<Sweet, int> _sweets;
 
         /// <summary>
         /// Название подарка
@@ -50,7 +49,7 @@ namespace NewYearGift.BL
         public Gift(string name)
         {
             Name = name;
-            _sweets = new Dictionary<SweetBase, int>();
+            _sweets = new Dictionary<Sweet, int>();
         }
 
         /// <summary>
@@ -58,7 +57,7 @@ namespace NewYearGift.BL
         /// </summary>
         /// <param name="sweet">Конфета</param>
         /// <param name="count">Количество</param>
-        public void AddSweet(SweetBase sweet, int count = 1)
+        public void AddSweet(Sweet sweet, int count = 1)
         {
             if (sweet == null)
             {
@@ -80,12 +79,12 @@ namespace NewYearGift.BL
         {
             _sweets = sweetsOrderRule switch
             {
-                SweetsOrderRule.Name => new Dictionary<SweetBase, int>(_sweets.OrderBy(s => s.Key.Name)),
-                SweetsOrderRule.Manufacturer => new Dictionary<SweetBase, int>(_sweets.OrderBy(s => s.Key.Manufacturer)),
-                SweetsOrderRule.Price => new Dictionary<SweetBase, int>(_sweets.OrderBy(s => s.Key.Price)),
-                SweetsOrderRule.Weight => new Dictionary<SweetBase, int>(_sweets.OrderBy(s => s.Key.Weight)),
-                SweetsOrderRule.SugarWeight => new Dictionary<SweetBase, int>(_sweets.OrderBy(s => s.Key.SugarWeight)),
-                SweetsOrderRule.Count => new Dictionary<SweetBase, int>(_sweets.OrderBy(s => s.Value)),
+                SweetsOrderRule.Name => new Dictionary<Sweet, int>(_sweets.OrderBy(s => s.Key.Name)),
+                SweetsOrderRule.Manufacturer => new Dictionary<Sweet, int>(_sweets.OrderBy(s => s.Key.Manufacturer)),
+                SweetsOrderRule.Price => new Dictionary<Sweet, int>(_sweets.OrderBy(s => s.Key.Price)),
+                SweetsOrderRule.Weight => new Dictionary<Sweet, int>(_sweets.OrderBy(s => s.Key.Weight)),
+                SweetsOrderRule.SugarWeight => new Dictionary<Sweet, int>(_sweets.OrderBy(s => s.Key.SugarWeight)),
+                SweetsOrderRule.Count => new Dictionary<Sweet, int>(_sweets.OrderBy(s => s.Value)),
                 _ => throw new ArgumentOutOfRangeException(nameof(sweetsOrderRule), sweetsOrderRule, null)
             };
         }
