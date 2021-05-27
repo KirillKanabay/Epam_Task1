@@ -7,10 +7,11 @@ namespace NewYearGift.Controllers
     public class GiftController
     {
         private readonly IGiftService _giftService;
-
-        public GiftController(IGiftService giftService)
+        private readonly ISweetService _sweetService;
+        public GiftController(IGiftService giftService, ISweetService sweetService)
         {
             _giftService = giftService;
+            _sweetService = sweetService;
         }
 
         public List<Gift> GetAll()
@@ -35,6 +36,22 @@ namespace NewYearGift.Controllers
         public Gift Delete(int id)
         {
             return _giftService.Delete(id);
+        }
+
+        public void AddSweetToGift(int giftId, int sweetId, int count)
+        {
+            var sweet = _sweetService.GetById(sweetId);
+            _giftService.AddSweetToGift(giftId, sweet, count);
+        }
+
+        public void Order(int giftId, SweetsOrderRule orderRule)
+        {
+            _giftService.Order(giftId, orderRule);
+        }
+
+        public Sweet FindSweetBySugarRange(int giftId, int startValue, int endValue)
+        {
+            return _giftService.FindSweetBySugarRange(giftId, startValue, endValue);
         }
     }
 }

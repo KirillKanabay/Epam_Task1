@@ -12,13 +12,13 @@ namespace NewYearGift.Services
         /// </summary>
         /// <returns>Подарки</returns>
         List<Gift> GetAll();
-        
+
         /// <summary>
         /// Получить подарок по идентификатору
         /// </summary>
-        /// <param name="id">Идентификатор подарка</param>
+        /// <param name="giftId">Идентификатор подарка</param>
         /// <returns>Подарок</returns>
-        Gift GetById(int id);
+        Gift GetById(int giftId);
 
         /// <summary>
         /// Метод добавляющий подарок
@@ -29,16 +29,40 @@ namespace NewYearGift.Services
         /// <summary>
         /// Метод обновляющий подарок
         /// </summary>
-        /// <param name="id">Идентификатор подарка</param>
+        /// <param name="giftId">Идентификатор подарка</param>
         /// <param name="gift">Измененный подарок</param>
         /// <returns></returns>
-        Gift Update(int id, Gift gift);
+        Gift Update(int giftId, Gift gift);
 
         /// <summary>
         /// Метод удаляющий подарок
         /// </summary>
-        /// <param name="id">Идентификатор подарка</param>
+        /// <param name="giftId">Идентификатор подарка</param>
         /// <returns>Удаленный подарок</returns>
-        Gift Delete(int id);
+        Gift Delete(int giftId);
+
+        /// <summary>
+        /// Метод добавляющий сладость в подарок
+        /// </summary>
+        /// <param name="giftId">Идентификатор подарка</param>
+        /// <param name="sweet"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        void AddSweetToGift(int giftId, Sweet sweet, int count);
+
+        /// <summary>
+        /// Метод производящий поиск конфеты по заданному диапазону содержания сахара в подарке
+        /// </summary>
+        /// <param name="startValue">Начальное значение количества сахара</param>
+        /// <param name="endValue">Конечное значение количества сахара</param>
+        /// <returns>Сладость подходящие под условие</returns>
+        Sweet FindSweetBySugarRange(int giftId, int startValue, int endValue);
+
+        /// <summary>
+        /// Метод сортирующий конфеты в подарке по определенному правилу 
+        /// </summary>
+        /// <param name="giftId">Идентификатор подарка</param>
+        /// <param name="orderRule">Правило сортировки</param>
+        void Order(int giftId, SweetsOrderRule orderRule);
     }
 }

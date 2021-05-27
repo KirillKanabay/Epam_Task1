@@ -35,7 +35,7 @@ namespace NewYearGift.Views
                 }
                 catch (Exception e)
                 {
-                    ConsoleExtensions.WriteError(e.Message);
+                    ConsoleExtensions.WriteLineError(e.Message);
                 }
             }
         }
@@ -75,7 +75,8 @@ namespace NewYearGift.Views
             {
                 try
                 {
-                    Console.WriteLine($"Введите номер типа сладости:{Environment.NewLine}" +
+                    Console.WriteLine($"{Environment.NewLine}" +
+                                      $"Введите номер типа сладости:{Environment.NewLine}" +
                                       $"Шоколадная конфета: 1 {Environment.NewLine}" +
                                       $"Леденец: 2 {Environment.NewLine}");
 
@@ -110,41 +111,60 @@ namespace NewYearGift.Views
                     }
                     else if(sweet is Lollipop)
                     {
-                        Console.Write("Вкус:");
+                        Console.Write("Ароматизатор:");
                         ((Lollipop) sweet).Flavor = Console.ReadLine();
                     }
 
                     _sweetController.Add(sweet);
+                    
+                    Clear();
+
+                    if (ConsoleExtensions.CheckContinue("Добавить еще одну запись? (y/n):")) continue;
+                    Clear();
                     break;
                 }
                 catch (Exception e)
                 {
-                    ConsoleExtensions.WriteError(e.Message);
+                    ConsoleExtensions.WriteLineError(e.Message);
+
+                    if (ConsoleExtensions.CheckContinue("Добавить еще одну запись? (y/n):")) continue;
+                    Clear();
+                    break;
                 }
+                
             }
+           
         }
 
         private void DeleteSweet()
         {
             Clear();
             ShowSweets();
-            Console.Write("Введите id сладости:");
-            int id = int.Parse(Console.ReadLine());
-            try
+
+            int id;
+            do
             {
-                _sweetController.Delete(id);
-            }
-            catch (Exception e)
-            {
-                ConsoleExtensions.WriteError(e.Message);
-            }
-            
+                Console.Write($"{Environment.NewLine}" +
+                              "Введите id сладости (оставьте строку пустой для отмены ввода):");
+                id = int.Parse(Console.ReadLine() ?? "-1");
+                try
+                {
+                    _sweetController.Delete(id);
+                }
+                catch (Exception e)
+                {
+                    ConsoleExtensions.WriteLineError(e.Message);
+                }
+            } while (id != -1);
+
+            Clear();
         }
 
         private void ShowSweets()
         {
             Clear();
-            Console.WriteLine("Список доступных сладостей:");
+            Console.WriteLine($"{Environment.NewLine}" +
+                              "Список доступных сладостей:");
             var sweetsList = _sweetController.GetAll();
             for (int sweetIdx = 0; sweetIdx < sweetsList.Count; sweetIdx++)
             {

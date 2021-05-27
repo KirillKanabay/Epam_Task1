@@ -15,8 +15,7 @@ namespace NewYearGift.Models
         /// <summary>
         /// Словарь хранит конфету и их количество
         /// </summary>
-        private Dictionary<Sweet, int> _sweets;
-
+        public Dictionary<Sweet, int> Sweets = new Dictionary<Sweet, int>();
         /// <summary>
         /// Название подарка
         /// </summary>
@@ -36,55 +35,35 @@ namespace NewYearGift.Models
         /// <summary>
         /// Количество конфет в подарке
         /// </summary>
-        public int SweetsCount => _sweets.Count;
+        public int SweetsCount => Sweets.Sum(s => s.Value);
         /// <summary>
         /// Суммарный вес конфет
         /// </summary>
-        public double TotalWeight => _sweets.Sum(s => s.Key.Weight * s.Value);
+        public double TotalWeight => Sweets.Sum(s => s.Key.Weight * s.Value);
         /// <summary>
         /// Суммарная стоимость
         /// </summary>
-        public decimal TotalPrice => _sweets.Sum(s => s.Key.Price * s.Value);
+        public decimal TotalPrice => Sweets.Sum(s => s.Key.Price * s.Value);
         
         public Gift(string name)
         {
             Name = name;
-            _sweets = new Dictionary<Sweet, int>();
         }
-
-        /// <summary>
-        /// Метод добавляющий конфеты в подарок
-        /// </summary>
-        /// <param name="sweet">Конфета</param>
-        /// <param name="count">Количество</param>
-        public void AddSweet(Sweet sweet, int count = 1)
-        {
-            if (sweet == null)
-            {
-                throw new ArgumentNullException(nameof(sweet), "Сладость не может быть Null");
-            }
-
-            if (count <= 0)
-            {
-                throw new ArgumentException("Количество конфет не может быть меньше или равно нулю");
-            }
-            _sweets.Add(sweet, count);
-        }
-
+        
         /// <summary>
         /// Сортировка списка конфет по параметру
         /// </summary>
         /// <param name="sweetsOrderRule"></param>
         public void OrderBy(SweetsOrderRule sweetsOrderRule)
         {
-            _sweets = sweetsOrderRule switch
+            Sweets = sweetsOrderRule switch
             {
-                SweetsOrderRule.Name => new Dictionary<Sweet, int>(_sweets.OrderBy(s => s.Key.Name)),
-                SweetsOrderRule.Manufacturer => new Dictionary<Sweet, int>(_sweets.OrderBy(s => s.Key.Manufacturer)),
-                SweetsOrderRule.Price => new Dictionary<Sweet, int>(_sweets.OrderBy(s => s.Key.Price)),
-                SweetsOrderRule.Weight => new Dictionary<Sweet, int>(_sweets.OrderBy(s => s.Key.Weight)),
-                SweetsOrderRule.SugarWeight => new Dictionary<Sweet, int>(_sweets.OrderBy(s => s.Key.SugarWeight)),
-                SweetsOrderRule.Count => new Dictionary<Sweet, int>(_sweets.OrderBy(s => s.Value)),
+                SweetsOrderRule.Name => new Dictionary<Sweet, int>(Sweets.OrderBy(s => s.Key.Name)),
+                SweetsOrderRule.Manufacturer => new Dictionary<Sweet, int>(Sweets.OrderBy(s => s.Key.Manufacturer)),
+                SweetsOrderRule.Price => new Dictionary<Sweet, int>(Sweets.OrderBy(s => s.Key.Price)),
+                SweetsOrderRule.Weight => new Dictionary<Sweet, int>(Sweets.OrderBy(s => s.Key.Weight)),
+                SweetsOrderRule.SugarWeight => new Dictionary<Sweet, int>(Sweets.OrderBy(s => s.Key.SugarWeight)),
+                SweetsOrderRule.Count => new Dictionary<Sweet, int>(Sweets.OrderBy(s => s.Value)),
                 _ => throw new ArgumentOutOfRangeException(nameof(sweetsOrderRule), sweetsOrderRule, null)
             };
         }
@@ -97,7 +76,7 @@ namespace NewYearGift.Models
             sb.AppendLine($"Список конфет:");
             
             int index = 1;
-            foreach (var sweet in _sweets)
+            foreach (var sweet in Sweets)
             {
                 sb.AppendLine($"{index}. {sweet.Key}, Количество: {sweet.Value}");
                 index++;
