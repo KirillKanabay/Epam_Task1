@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using NewYearGift.Models;
 
-namespace NewYearGift.Services
+namespace NewYearGift.Repositories
 {
-    public interface ISweetService
+    public interface ISweetRepository
     {
         /// <summary>
         /// Метод возвращающий все сладости

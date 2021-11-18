@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using NewYearGift.Models;
-using NewYearGift.Services;
+using NewYearGift.Repositories;
 
 namespace NewYearGift.Controllers
 {
     public class SweetController
     {
-        private readonly ISweetService _sweetService;
+        private readonly ISweetRepository _sweetService;
 
-        public SweetController(ISweetService sweetService)
+        public SweetController(ISweetRepository sweetService)
         {
             _sweetService = sweetService;
         }

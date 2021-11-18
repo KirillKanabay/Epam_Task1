@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using NewYearGift.Models;
 
-namespace NewYearGift.Services
+namespace NewYearGift.Repositories
 {
-    public interface IGiftService
+    public interface IGiftRepository
     {
         /// <summary>
         /// Метод возвращающий все подарки

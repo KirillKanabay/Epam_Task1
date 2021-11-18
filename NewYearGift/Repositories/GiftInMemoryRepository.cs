@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using NewYearGift.Models;
 
-namespace NewYearGift.Services
+namespace NewYearGift.Repositories
 {
-    public class GiftInMemoryService:IGiftService
+    public class GiftInMemoryRepository:IGiftRepository
     {
         private readonly List<Gift> _giftsList = new List<Gift>();
         public List<Gift> GetAll() => _giftsList;

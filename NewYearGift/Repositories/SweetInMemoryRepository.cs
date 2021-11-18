@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using NewYearGift.Models;
 
-namespace NewYearGift.Services
+namespace NewYearGift.Repositories
 {
-    class SweetInMemoryService:ISweetService
+    class SweetInMemoryRepository : ISweetRepository
     {
         private readonly List<Sweet> _sweetsList = new List<Sweet>()
         {
