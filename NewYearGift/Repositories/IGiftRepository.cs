@@ -5,42 +5,8 @@ using NewYearGift.Models;
 
 namespace NewYearGift.Repositories
 {
-    public interface IGiftRepository
+    public interface IGiftRepository : IRepository<Gift>
     {
-        /// <summary>
-        /// Метод возвращающий все подарки
-        /// </summary>
-        /// <returns>Подарки</returns>
-        List<Gift> GetAll();
-
-        /// <summary>
-        /// Получить подарок по идентификатору
-        /// </summary>
-        /// <param name="giftId">Идентификатор подарка</param>
-        /// <returns>Подарок</returns>
-        Gift GetById(int giftId);
-
-        /// <summary>
-        /// Метод добавляющий подарок
-        /// </summary>
-        /// <returns>Возвращает последнюю добавленный подарок</returns>
-        Gift Add(Gift gift);
-
-        /// <summary>
-        /// Метод обновляющий подарок
-        /// </summary>
-        /// <param name="giftId">Идентификатор подарка</param>
-        /// <param name="gift">Измененный подарок</param>
-        /// <returns></returns>
-        Gift Update(int giftId, Gift gift);
-
-        /// <summary>
-        /// Метод удаляющий подарок
-        /// </summary>
-        /// <param name="giftId">Идентификатор подарка</param>
-        /// <returns>Удаленный подарок</returns>
-        Gift Delete(int giftId);
-
         /// <summary>
         /// Метод добавляющий сладость в подарок
         /// </summary>

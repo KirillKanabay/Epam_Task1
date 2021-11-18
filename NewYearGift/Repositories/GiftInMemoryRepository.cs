@@ -7,28 +7,49 @@ namespace NewYearGift.Repositories
 {
     public class GiftInMemoryRepository:IGiftRepository
     {
-        private readonly List<Gift> _giftsList = new List<Gift>();
-        public List<Gift> GetAll() => _giftsList;
+        private readonly IList<Gift> _giftsCollection;
+
+        public GiftInMemoryRepository()
+        {
+            
+        }
+        public GiftInMemoryRepository(IList<Gift> giftsCollection)
+        {
+            _giftsCollection = giftsCollection;
+        }
+        
         public Gift GetById(int giftId)
         {
-            if (giftId < 0 || giftId >= _giftsList.Count)
+            if (giftId < 0)
             {
-                throw new ArgumentException("Такого подарка не существует.", nameof(giftId));
+                throw new ArgumentException("Gift id cannot be null", nameof(giftId));
             }
-            return _giftsList[giftId];
+            
+            //todo: Возвратить элемент по id
+            throw new NotImplementedException();
+            // return _giftsCollection.Where(gift => gift.);
         }
-        public Gift Add(Gift gift)
+        public IEnumerable<Gift> ListAll()
+        {
+            return _giftsCollection;
+        }
+
+        public IEnumerable<Gift> List(Func<Gift, bool> predicate)
+        {
+            return _giftsCollection.Where(predicate);
+        }
+
+        public void Add(Gift gift)
         {
             if (gift == null)
             {
                 throw new ArgumentNullException(nameof(gift), "Подарок не может быть null.");
             }
-            _giftsList.Add(gift);
-            return gift;
+            _giftsCollection.Add(gift);
         }
-        public Gift Update(int giftId, Gift gift)
+        public void Update(int giftId, Gift gift)
         {
-            if (giftId < 0 || giftId >= _giftsList.Count)
+            if (giftId < 0 || giftId >= _giftsCollection.Count)
             {
                 throw new ArgumentException("Такого подарка не существует.", nameof(giftId));
             }
@@ -36,22 +57,21 @@ namespace NewYearGift.Repositories
             {
                 throw new ArgumentNullException(nameof(gift), "Подарок не может быть null.");
             }
-            _giftsList[giftId] = gift;
-            return gift;
+            _giftsCollection[giftId] = gift;
         }
-        public Gift Delete(int giftId)
+        public void Delete(int giftId)
         {
-            if (giftId < 0 || giftId >= _giftsList.Count)
+            if (giftId < 0 || giftId >= _giftsCollection.Count)
             {
                 throw new ArgumentException("Такого подарка не существует.", nameof(giftId));
             }
-            var deletedGift = _giftsList[giftId];
-            _giftsList.RemoveAt(giftId);
-            return deletedGift;
+            
+            var deletedGift = _giftsCollection[giftId];
+            _giftsCollection.RemoveAt(giftId);
         }
         public void AddSweetToGift(int giftId, Sweet sweet, int count)
         {
-            if (giftId < 0 || giftId >= _giftsList.Count)
+            if (giftId < 0 || giftId >= _giftsCollection.Count)
             {
                 throw new ArgumentException("Такого подарка не существует.", nameof(giftId));
             }
@@ -64,20 +84,20 @@ namespace NewYearGift.Repositories
                 throw new ArgumentException("Количество добавляемых конфет не может быть меньше или равно null");
             }
 
-            var gift = _giftsList[giftId];
+            var gift = _giftsCollection[giftId];
             if (gift.Sweets.ContainsKey(sweet))
             {
                 gift.Sweets[sweet] += count;
             }
             else
             {
-                _giftsList[giftId].Sweets.Add(sweet, count);
+                _giftsCollection[giftId].Sweets.Add(sweet, count);
             }
             
         }
         public Sweet FindSweetBySugarRange(int giftId, int startValue, int endValue)
         {
-            if (giftId < 0 || giftId >= _giftsList.Count)
+            if (giftId < 0 || giftId >= _giftsCollection.Count)
             {
                 throw new ArgumentException("Такого подарка не существует.", nameof(giftId));
             }
@@ -87,17 +107,18 @@ namespace NewYearGift.Repositories
                 throw new ArgumentException("Неправильно задан диапазон.");
             }
 
-            return _giftsList[giftId].Sweets
+            return _giftsCollection[giftId].Sweets
                 .FirstOrDefault(s => s.Key.SugarWeight >= startValue && s.Key.SugarWeight <= endValue).Key;
         }
+
         public void Order(int giftId, SweetsOrderRule orderRule)
         {
-            if (giftId < 0 || giftId >= _giftsList.Count)
-            {
-                throw new ArgumentException("Такого подарка не существует.", nameof(giftId));
-            }
+            throw new NotImplementedException();
+        }
 
-            _giftsList[giftId].OrderBy(orderRule);
+        public IEnumerable<Gift> OrderBy(IComparer<Gift> comparer)
+        {
+            return _giftsCollection.OrderBy(x => x, comparer);
         }
     }
 }
