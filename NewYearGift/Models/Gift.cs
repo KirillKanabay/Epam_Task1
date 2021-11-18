@@ -10,8 +10,6 @@ namespace NewYearGift.Models
     /// </summary>
     public class Gift
     {
-        private string _name;
-        
         /// <summary>
         /// Словарь хранит конфету и их количество
         /// </summary>
@@ -19,19 +17,7 @@ namespace NewYearGift.Models
         /// <summary>
         /// Название подарка
         /// </summary>
-        public string Name
-        {
-            get => _name;
-            set
-            {
-                if (string.IsNullOrWhiteSpace(value))
-                {
-                    throw new ArgumentException("Название подарка не может быть пустым");
-                }
-
-                _name = value;
-            }
-        }
+        public string Name { get; set; }
         /// <summary>
         /// Количество конфет в подарке
         /// </summary>

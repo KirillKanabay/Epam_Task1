@@ -7,24 +7,10 @@ namespace NewYearGift.Models
     /// </summary>
     public class ChocolateSweet : Sweet
     {
-        private string _kindOfChocolate;
-
         /// <summary>
         /// Тип шоколада
         /// </summary>
-        public string KindOfChocolate
-        {
-            get => _kindOfChocolate;
-            set
-            {
-                if (string.IsNullOrWhiteSpace(value))
-                {
-                    throw new ArgumentException("Тип шоколада конфеты не может быть пустым.");
-                }
-
-                _kindOfChocolate = value;
-            }
-        }
+        public string KindOfChocolate { get; set; }
 
         public ChocolateSweet() { }
 
