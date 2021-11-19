@@ -122,7 +122,7 @@ namespace NewYearGift.Views
                 sortId = int.Parse(Console.ReadLine() ?? "-1");
                 try
                 {
-                    _giftController.Order(giftId, (SweetsOrderRule)sortId);
+                    _giftController.OrderSweetsInGift(giftId, (SweetsOrderRule)sortId);
                     break;
                 }
                 catch (Exception e)

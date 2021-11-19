@@ -12,11 +12,11 @@ namespace NewYearGift.Models
         /// </summary>
         public string KindOfChocolate { get; set; }
 
-        public ChocolateSweet() { }
+        public ChocolateSweet(int id, string name) : base(id, name) { }
 
-        public ChocolateSweet(string name, string manufacturer, double weight, double sugarWeight, decimal price,
+        public ChocolateSweet(int id, string name, string manufacturer, double weight, double sugarWeight, decimal price,
             string kindOfChocolate)
-            : base(name, manufacturer, weight, sugarWeight, price)
+            : base(id, name, manufacturer, weight, sugarWeight, price)
         {
             KindOfChocolate = kindOfChocolate;
         }

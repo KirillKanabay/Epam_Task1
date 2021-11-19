@@ -3,43 +3,48 @@
 namespace NewYearGift.Models
 {
     /// <summary>
-    /// Базовый класс сладости
+    /// Базовый класс конфеты
     /// </summary>
-    public abstract class Sweet{
+    public abstract class Sweet 
+    {
         /// <summary>
-        /// Название сладости
+        /// Идентификатор конфеты
         /// </summary>
-        public string Name { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
-        /// Производитель сладости
+        /// Название конфеты
+        /// </summary>
+        public string Name { get; set; }
+        
+        /// <summary>
+        /// Производитель конфеты
         /// </summary>
         public string Manufacturer { get; set; }
 
         /// <summary>
-        /// Вес сладости
+        /// Вес конфеты
         /// </summary>
         public double Weight { get; set; }
 
         /// <summary>
-        /// Вес сахара в одной сладости
+        /// Вес сахара в одной конфете
         /// </summary>
         public double SugarWeight { get; set; }
 
         /// <summary>
-        /// Стоимость одной сладости
+        /// Стоимость одной конфеты
         /// </summary>
         public decimal Price { get; set; }
-
-        protected Sweet(string name, string manufacturer, double weight, double sugarWeight, decimal price)
+        
+        protected Sweet(int id, string name) {}
+        
+        protected Sweet(int id, string name, string manufacturer, double weight, double sugarWeight, decimal price)
         {
-            Name = name;
             Manufacturer = manufacturer;
             Weight = weight;
             SugarWeight = sugarWeight;
             Price = price;
         }
-
-        protected Sweet(){}
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NewYearGift.Comparers.SweetsComparers;
 using NewYearGift.Models;
 using NewYearGift.Repositories;
 
@@ -49,9 +50,21 @@ namespace NewYearGift.Controllers
             _giftRepository.AddSweetToGift(giftId, sweet, count);
         }
 
-        public void Order(int giftId, SweetsOrderRule orderRule)
+        public void OrderSweetsInGift(int giftId, SweetsOrderRule sweetsOrderRule)
         {
-            _giftRepository.Order(giftId, orderRule);
+            IComparer<Sweet> comparer = sweetsOrderRule switch
+            {
+                SweetsOrderRule.Name        => new SweetNameComparer(),
+                SweetsOrderRule.Price       => new SweetPriceComparer(),
+                SweetsOrderRule.Weight      => new SweetSugarComparer(),
+                SweetsOrderRule.SugarWeight => new SweetSugarComparer(),
+                
+                _                           => throw new ArgumentOutOfRangeException(
+                                                            nameof(sweetsOrderRule), 
+                                                     $"Not expected sweet order rule value: {sweetsOrderRule}"),
+            };
+            
+            var gift = _giftRepository.GetById(giftId);
         }
 
         public Sweet FindSweetBySugarRange(int giftId, int startValue, int endValue)
