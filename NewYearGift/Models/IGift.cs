@@ -72,5 +72,12 @@ namespace NewYearGift.Models
         /// <param name="id"></param>
         void Delete(int id);
         
+        /// <summary>
+        /// Поиск конфет в подарке по заданному диапазону содержания сахара
+        /// </summary>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        IReadOnlyList<Sweet> GetSweetsBySugarRange(double min, double max);
     }
 }

@@ -1,22 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using NewYearGift.Models;
+using NewYearGift.Validators;
 
 namespace NewYearGift.Repositories
 {
     class SweetInMemoryRepository : ISweetRepository
     {
-        private readonly List<Sweet> _sweetsList = new List<Sweet>()
+        private readonly IDictionary<int, Sweet> _sweetsCollection;
+        private readonly IValidator<Sweet> _sweetValidator;
+        public SweetInMemoryRepository()
         {
-            new ChocolateSweet("Ромашка", "Коммунарка", weight: 10.4d, sugarWeight: 4.2d, price: 0.50m, "Молочный"),
-            new ChocolateSweet("Черемуха", "Коммунарка", weight: 12.4d, sugarWeight: 3.5d, price: 0.45m, "Темный"),
-            new Lollipop("Леденец", "Коммунарка", weight: 8d, sugarWeight: 6d, price: 0.22m, "Дюшес"),
-            new Lollipop("Леденец", "Коммунарка", weight: 8d, sugarWeight: 6d, price: 0.22m, "Мята"),
-            new Lollipop("Леденец", "Коммунарка", weight: 8d, sugarWeight: 6d, price: 0.22m, "Барбарис"),
-        };
+            _sweetsCollection = new Dictionary<int, Sweet>();
+            _sweetValidator = new SweetValidator();
+        }
 
-        public List<Sweet> GetAll() => _sweetsList;
+        public SweetInMemoryRepository(IDictionary<int, Sweet> sweetsCollection)
+        {
+            _sweetValidator = new SweetValidator();
+            _sweetsCollection = sweetsCollection;
+        }
+
+        public List<Sweet> GetAll()
+        {
+            return _sweetsCollection.Values.ToList();
+        }
 
         void ISweetRepository.Add(Sweet item)
         {
@@ -25,63 +35,70 @@ namespace NewYearGift.Repositories
 
         public Sweet GetById(int id)
         {
-            if (id < 0 || id >= _sweetsList.Count)
+            if (id < 0)
             {
-                throw new ArgumentException("Такой сладости не существует.", nameof(id));
+                throw new ArgumentNullException(nameof(id), "Sweet id can't be less than 0");
             }
 
-            return _sweetsList[id];
+            return _sweetsCollection[id];
         }
 
-        public IEnumerable<Sweet> ListAll()
+        public IReadOnlyList<Sweet> ListAll()
         {
-            throw new NotImplementedException();
+            return _sweetsCollection.Values.ToList();
         }
 
-        public IEnumerable<Sweet> List(Func<Sweet, bool> predicate)
+        public IReadOnlyList<Sweet> List(Func<Sweet, bool> predicate)
         {
-            throw new NotImplementedException();
+            if (predicate == null)
+            {
+                throw new ArgumentNullException(nameof(predicate), "Predicate can't be null");
+            }
+
+            return _sweetsCollection.Values.Where(predicate).ToList();
         }
 
-        public IEnumerable<Sweet> OrderBy(IComparer<Sweet> comparer)
+        public IReadOnlyList<Sweet> OrderBy(IComparer<Sweet> comparer)
         {
-            throw new NotImplementedException();
+            return _sweetsCollection.Values.OrderBy(sweet => sweet, comparer).ToList();
         }
         
-        public Sweet Add(Sweet sweet)
+        public void Add(Sweet sweet)
         {
-            if (sweet == null)
-            {
-                throw new ArgumentNullException(nameof(sweet), "Сладость не может быть null");
-            }
-            _sweetsList.Add(sweet);
-            return sweet;
+            _sweetValidator.Validate(sweet);
+            
+            _sweetsCollection.Add(sweet.Id, sweet);
         }
 
-        public void Update(int id, Sweet sweet)
+        public void Update(Sweet sweet)
         {
-            if (id < 0 || id >= _sweetsList.Count)
+            _sweetValidator.Validate(sweet);
+
+            int sweetId = sweet.Id;
+
+            if (_sweetsCollection.ContainsKey(sweetId))
             {
-                throw new ArgumentException("Такой сладости не существует.", nameof(id));
+                _sweetsCollection[sweetId] = sweet;
             }
-            if (sweet == null)
+            else
             {
-                throw new ArgumentNullException(nameof(sweet), "Сладость не может быть null");
+                _sweetsCollection.Add(sweetId, sweet);
             }
-            _sweetsList[id] = sweet;
-            //return sweet;
         }
 
-        public void Delete(int id)
+        public void Delete(int sweetId)
         {
-            if (id < 0 || id >= _sweetsList.Count)
+            if (sweetId < 0)
             {
-                throw new ArgumentException("Такой сладости не существует.", nameof(id));
+                throw new ArgumentException("Sweet's id can't be less than 0", nameof(sweetId));
+            }
+            
+            if (!_sweetsCollection.ContainsKey(sweetId))
+            {
+                throw new ArgumentException($"Not found sweet with id: {sweetId}", nameof(sweetId));
             }
 
-            var deletedSweet = _sweetsList[id];
-            _sweetsList.RemoveAt(id);
-            //return deletedSweet;
+            _sweetsCollection.Remove(sweetId);
         }
     }
 }

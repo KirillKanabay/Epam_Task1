@@ -12,10 +12,12 @@ namespace NewYearGift.Repositories
         private readonly IValidator<Gift> _giftValidator;
         public GiftInMemoryRepository()
         {
+            _giftsCollection = new Dictionary<int, Gift>();
             _giftValidator = new GiftValidator();
         }
         public GiftInMemoryRepository(IDictionary<int, Gift> giftsCollection)
         {
+            _giftValidator = new GiftValidator();
             _giftsCollection = giftsCollection;
         }
         
@@ -71,6 +73,11 @@ namespace NewYearGift.Repositories
                 throw new ArgumentException("Gift's id can't be less than 0", nameof(giftId));
             }
             
+            if (!_giftsCollection.ContainsKey(giftId))
+            {
+                throw new ArgumentException($"Not found gift with id: {giftId}", nameof(giftId));
+            }
+
             _giftsCollection.Remove(giftId);
         }
 

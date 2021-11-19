@@ -121,6 +121,7 @@ namespace NewYearGift.Models
                 .OrderBy(giftItem => giftItem.Sweet, comparer)
                 .ToList();
         }
+        
         public void Update(GiftItem item)
         {
             _giftItemValidator.Validate(item);
@@ -150,6 +151,30 @@ namespace NewYearGift.Models
 
             _giftItems.Remove(id);
         }
+
+        public IReadOnlyList<Sweet> GetSweetsBySugarRange(double min, double max)
+        {
+            if (min < 0)
+            {
+                throw new ArgumentException("Min value can't be less than 0", nameof(min));
+            }
+
+            if (max < 0)
+            {
+                throw new ArgumentException("Max value can't be less than 0", nameof(max));
+            }
+
+            if (min > max)
+            {
+                throw new ArgumentException("Max value can't be less than min value", nameof(max));
+            }
+
+            return _giftItems.Values
+                .Select(giftItem => giftItem.Sweet)
+                .Where(sweet => sweet.SugarWeight >= min && sweet.SugarWeight <= max)
+                .ToList();
+        }
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

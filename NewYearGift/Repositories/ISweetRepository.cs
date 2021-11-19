@@ -23,28 +23,27 @@ namespace NewYearGift.Repositories
         /// Получение списка конфет
         /// </summary>
         /// <returns></returns>
-        IEnumerable<Sweet> ListAll();
+        IReadOnlyList<Sweet> ListAll();
         
         /// <summary>
         /// Получение списка конфет по определенному предикату
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        IEnumerable<Sweet> List(Func<Sweet, bool> predicate);
+        IReadOnlyList<Sweet> List(Func<Sweet, bool> predicate);
         
         /// <summary>
         /// Получение отсортированных конфет
         /// </summary>
         /// <param name="comparer"></param>
         /// <returns></returns>
-        IEnumerable<Sweet> OrderBy(IComparer<Sweet> comparer);
+        IReadOnlyList<Sweet> OrderBy(IComparer<Sweet> comparer);
         
         /// <summary>
-        /// Обновление конфеты
+        /// Обновление конфеты, если ее не существует, добавляется новая
         /// </summary>
-        /// <param name="id"></param>
         /// <param name="item"></param>
-        void Update(int id, Sweet item);
+        void Update(Sweet item);
         
         /// <summary>
         /// Удаление конфеты
