@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NewYearGift.Models;
 
 namespace NewYearGift.Repositories
@@ -6,37 +7,49 @@ namespace NewYearGift.Repositories
     public interface ISweetRepository
     {
         /// <summary>
-        /// Метод возвращающий все сладости
+        /// Метод добавляющий конфету
         /// </summary>
-        /// <returns>Подарки</returns>
-        List<Sweet> GetAll();
-
+        /// <param name="item">Конфета</param>
+        void Add(Sweet item);
+        
         /// <summary>
-        /// Получить сладость по идентификатору
+        /// Получение конфеты по id
         /// </summary>
-        /// <param name="id">Идентификатор сладости</param>
-        /// <returns>Сладость</returns>
-        Sweet GetById(int id);
-
+        /// <param name="id">Id конфеты</param>
+        /// <returns></returns>
+        Sweet GetById(int id); 
+        
         /// <summary>
-        /// Метод добавляющий сладость
+        /// Получение списка конфет
         /// </summary>
-        /// <returns>Возвращает последнюю добавленную сладость</returns>
-        Sweet Add(Sweet sweet);
-
+        /// <returns></returns>
+        IEnumerable<Sweet> ListAll();
+        
         /// <summary>
-        /// Метод обновляющий сладость
+        /// Получение списка конфет по определенному предикату
         /// </summary>
-        /// <param name="id">Идентификатор сладости</param>
-        /// <param name="sweet">Измененная сладость</param>
-        /// <returns>Возвращает измененную сладость</returns>
-        Sweet Update(int id, Sweet sweet);
-
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        IEnumerable<Sweet> List(Func<Sweet, bool> predicate);
+        
         /// <summary>
-        /// Метод удаляющий сладость
+        /// Получение отсортированных конфет
         /// </summary>
-        /// <param name="id">Идентификатор сладости</param>
-        /// <returns>Удаленная сладость</returns>
-        Sweet Delete(int id);
+        /// <param name="comparer"></param>
+        /// <returns></returns>
+        IEnumerable<Sweet> OrderBy(IComparer<Sweet> comparer);
+        
+        /// <summary>
+        /// Обновление конфеты
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="item"></param>
+        void Update(int id, Sweet item);
+        
+        /// <summary>
+        /// Удаление конфеты
+        /// </summary>
+        /// <param name="id"></param>
+        void Delete(int id);
     }
 }

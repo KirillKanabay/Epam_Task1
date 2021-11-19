@@ -18,6 +18,11 @@ namespace NewYearGift.Repositories
 
         public List<Sweet> GetAll() => _sweetsList;
 
+        void ISweetRepository.Add(Sweet item)
+        {
+            throw new NotImplementedException();
+        }
+
         public Sweet GetById(int id)
         {
             if (id < 0 || id >= _sweetsList.Count)
@@ -26,8 +31,23 @@ namespace NewYearGift.Repositories
             }
 
             return _sweetsList[id];
-        } 
+        }
 
+        public IEnumerable<Sweet> ListAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Sweet> List(Func<Sweet, bool> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Sweet> OrderBy(IComparer<Sweet> comparer)
+        {
+            throw new NotImplementedException();
+        }
+        
         public Sweet Add(Sweet sweet)
         {
             if (sweet == null)
@@ -38,7 +58,7 @@ namespace NewYearGift.Repositories
             return sweet;
         }
 
-        public Sweet Update(int id, Sweet sweet)
+        public void Update(int id, Sweet sweet)
         {
             if (id < 0 || id >= _sweetsList.Count)
             {
@@ -49,10 +69,10 @@ namespace NewYearGift.Repositories
                 throw new ArgumentNullException(nameof(sweet), "Сладость не может быть null");
             }
             _sweetsList[id] = sweet;
-            return sweet;
+            //return sweet;
         }
 
-        public Sweet Delete(int id)
+        public void Delete(int id)
         {
             if (id < 0 || id >= _sweetsList.Count)
             {
@@ -61,7 +81,7 @@ namespace NewYearGift.Repositories
 
             var deletedSweet = _sweetsList[id];
             _sweetsList.RemoveAt(id);
-            return deletedSweet;
+            //return deletedSweet;
         }
     }
 }

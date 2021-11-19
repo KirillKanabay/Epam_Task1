@@ -5,7 +5,7 @@ using NewYearGift.Models;
 
 namespace NewYearGift.Repositories
 {
-    public class GiftInMemoryRepository:IGiftRepository
+    public class GiftInMemoryRepository : IGiftRepository
     {
         private readonly IList<Gift> _giftsCollection;
 

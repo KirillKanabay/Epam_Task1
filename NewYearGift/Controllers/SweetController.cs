@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NewYearGift.Models;
 using NewYearGift.Repositories;
 
@@ -15,7 +16,8 @@ namespace NewYearGift.Controllers
 
         public List<Sweet> GetAll()
         {
-            return _sweetService.GetAll();
+            throw new NotImplementedException();
+            //return _sweetService.GetAll();
         }
 
         public Sweet GetById(int id)
@@ -25,16 +27,19 @@ namespace NewYearGift.Controllers
 
         public Sweet Add(Sweet sweet)
         {
-            return _sweetService.Add(sweet);
+            throw new NotImplementedException();
+            //return _sweetService.Add(sweet);
         }
         public Sweet Update(int id, Sweet sweet)
         {
-            return _sweetService.Update(id, sweet);
+            throw new NotImplementedException();
+            //return _sweetService.Update(id, sweet);
         }
 
         public Sweet Delete(int id)
         {
-            return _sweetService.Delete(id);
+            throw new NotImplementedException();
+            // return _sweetService.Delete(id);
         }
     }
 }
