@@ -10,7 +10,7 @@ namespace NewYearGift.Models
         /// <summary>
         /// Идентификатор конфеты
         /// </summary>
-        public int Id { get; set; }
+        public int Id { get; }
 
         /// <summary>
         /// Название конфеты
@@ -36,15 +36,11 @@ namespace NewYearGift.Models
         /// Стоимость одной конфеты
         /// </summary>
         public decimal Price { get; set; }
-        
-        protected Sweet(int id, string name) {}
-        
-        protected Sweet(int id, string name, string manufacturer, double weight, double sugarWeight, decimal price)
+
+        protected Sweet(int id, string name)
         {
-            Manufacturer = manufacturer;
-            Weight = weight;
-            SugarWeight = sugarWeight;
-            Price = price;
+            Id = id;
+            Name = name;
         }
     }
 }

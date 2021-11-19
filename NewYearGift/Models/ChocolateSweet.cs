@@ -13,14 +13,7 @@ namespace NewYearGift.Models
         public string KindOfChocolate { get; set; }
 
         public ChocolateSweet(int id, string name) : base(id, name) { }
-
-        public ChocolateSweet(int id, string name, string manufacturer, double weight, double sugarWeight, decimal price,
-            string kindOfChocolate)
-            : base(id, name, manufacturer, weight, sugarWeight, price)
-        {
-            KindOfChocolate = kindOfChocolate;
-        }
-
+        
         public override string ToString()
         {
             return
