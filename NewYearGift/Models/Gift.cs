@@ -26,6 +26,7 @@ namespace NewYearGift.Models
         #endregion
         
         #region props
+        public int Id { get; }
         /// <summary>
         /// Название подарка
         /// </summary>
@@ -50,13 +51,15 @@ namespace NewYearGift.Models
 
         #region ctors
 
-        public Gift(string name)
+        public Gift(int id, string name)
         {
             _giftItems = new Dictionary<int, GiftItem>();
             _giftItemValidator = new GiftItemValidator();
+            
             Name = name;
+            Id = id;
         }
-        public Gift(string name, IDictionary<int, GiftItem> giftItems):this(name)
+        public Gift(int id, string name, IDictionary<int, GiftItem> giftItems):this(id, name)
         {
             _giftItems = giftItems;
         }
