@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using NewYearGift.Models;
 
-namespace NewYearGift.Models
+namespace NewYearGift.Domain.Models
 {
     public interface IGift
     {

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using NewYearGift.Controllers;
+using NewYearGift.BLL.Services;
+using NewYearGift.Domain.Models;
 using NewYearGift.Helpers;
-using NewYearGift.Models;
 using NewYearGift.Repositories;
 using NewYearGift.Views;
 
@@ -24,15 +24,15 @@ namespace NewYearGift
         private static IGiftRepository _giftRepository;
         private static GiftView _giftView;
         private static SweetView _sweetView;
-        private static GiftController _giftController;
-        private static SweetController _sweetController;
+        private static GiftService _giftController;
+        private static SweetService _sweetController;
         private static void InitDependencies()
         {
             _giftRepository = new GiftInMemoryRepository();
             _sweetRepository = new SweetInMemoryRepository();
 
-            _giftController = new GiftController(_giftRepository, _sweetRepository);
-            _sweetController = new SweetController(_sweetRepository);
+            _giftController = new GiftService(_giftRepository, _sweetRepository);
+            _sweetController = new SweetService(_sweetRepository);
 
             _giftView = new GiftView(_giftController, _sweetController);
             _sweetView = new SweetView(_sweetController);

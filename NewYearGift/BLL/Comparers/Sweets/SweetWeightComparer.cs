@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using NewYearGift.Models;
+using NewYearGift.Domain.Models;
 
-namespace NewYearGift.Comparers.SweetsComparers
+namespace NewYearGift.BLL.Comparers.Sweets
 {
     /// <summary>
-    /// Компоратор конфет по стоимости
+    /// Компоратор конфет по весу
     /// </summary>
-    public sealed class SweetPriceComparer : IComparer<Sweet>
+    public sealed class SweetWeightComparer : IComparer<Sweet>
     {
         public int Compare(Sweet sweet1, Sweet sweet2)
         {
@@ -14,7 +14,7 @@ namespace NewYearGift.Comparers.SweetsComparers
             if (ReferenceEquals(null, sweet2)) return 1;
             if (ReferenceEquals(null, sweet1)) return -1;
             
-            return sweet1.Price.CompareTo(sweet2.Price);
+            return sweet1.Weight.CompareTo(sweet2.Weight);
         }
     }
 }

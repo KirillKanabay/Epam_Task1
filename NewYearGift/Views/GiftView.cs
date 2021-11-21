@@ -1,15 +1,15 @@
 ﻿using System;
-using NewYearGift.Controllers;
+using NewYearGift.BLL.Services;
+using NewYearGift.Domain.Models;
 using NewYearGift.Helpers;
-using NewYearGift.Models;
 
 namespace NewYearGift.Views
 {
     public class GiftView
     {
-        private readonly GiftController _giftController;
-        private readonly SweetController _sweetController;
-        public GiftView(GiftController giftController, SweetController sweetController)
+        private readonly GiftService _giftController;
+        private readonly SweetService _sweetController;
+        public GiftView(GiftService giftController, SweetService sweetController)
         {
             _giftController = giftController;
             _sweetController = sweetController;

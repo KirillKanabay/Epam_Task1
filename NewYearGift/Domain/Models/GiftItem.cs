@@ -1,9 +1,11 @@
-﻿namespace NewYearGift.Models
+﻿using NewYearGift.Domain.Models;
+
+namespace NewYearGift.Models
 {
     /// <summary>
     /// Позиция в подарке
     /// </summary>
-    public class GiftItem
+    public abstract class GiftItem
     {
         public int Id { get; }
         /// <summary>

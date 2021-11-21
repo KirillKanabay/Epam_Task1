@@ -1,6 +1,6 @@
-﻿using System;
+﻿using NewYearGift.Models;
 
-namespace NewYearGift.Models
+namespace NewYearGift.Domain.Models
 {
     /// <summary>
     /// Класс шоколадной конфеты

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NewYearGift.Comparers.SweetsComparers;
-using NewYearGift.Validators;
+using NewYearGift.BLL.Comparers.Sweets;
+using NewYearGift.BLL.Services.Validation;
+using NewYearGift.Models;
 
-namespace NewYearGift.Models
+namespace NewYearGift.Domain.Models
 {
     /// <summary>
     /// Класс подарка

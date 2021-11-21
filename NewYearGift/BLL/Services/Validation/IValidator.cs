@@ -1,4 +1,4 @@
-﻿namespace NewYearGift.Validators
+﻿namespace NewYearGift.BLL.Services.Validation
 {
     public interface IValidator<in T> where T : class
     {

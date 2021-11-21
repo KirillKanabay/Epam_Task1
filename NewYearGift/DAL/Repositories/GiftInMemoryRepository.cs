@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NewYearGift.BLL.Services.Validation;
+using NewYearGift.Domain.Models;
 using NewYearGift.Models;
-using NewYearGift.Validators;
 
 namespace NewYearGift.Repositories
 {

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using NewYearGift.Models;
+using NewYearGift.Domain.Models;
 
-namespace NewYearGift.Comparers.SweetsComparers
+namespace NewYearGift.BLL.Comparers.Sweets
 {
     public sealed class SweetNameComparer : IComparer<Sweet>
     {

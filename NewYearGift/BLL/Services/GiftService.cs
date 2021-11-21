@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using NewYearGift.Comparers.SweetsComparers;
-using NewYearGift.Models;
+using NewYearGift.BLL.Comparers.Sweets;
+using NewYearGift.Domain.Models;
 using NewYearGift.Repositories;
 
-namespace NewYearGift.Controllers
+namespace NewYearGift.BLL.Services
 {
-    public class GiftController
+    public class GiftService
     {
         private readonly IGiftRepository _giftRepository;
         private readonly ISweetRepository _sweetRepository;
-        public GiftController(IGiftRepository giftService, ISweetRepository sweetService)
+        public GiftService(IGiftRepository giftService, ISweetRepository sweetService)
         {
             _giftRepository = giftService;
             _sweetRepository = sweetService;

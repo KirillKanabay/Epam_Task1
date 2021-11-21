@@ -1,7 +1,7 @@
 ﻿using System;
 using NewYearGift.Models;
 
-namespace NewYearGift.Validators
+namespace NewYearGift.BLL.Services.Validation
 {
     public class GiftItemValidator : IValidator<GiftItem>
     {

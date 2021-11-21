@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using NewYearGift.Models;
+using NewYearGift.Domain.Models;
 
-namespace NewYearGift.Comparers.SweetsComparers
+namespace NewYearGift.BLL.Comparers.Sweets
 {
     /// <summary>
     /// Компоратор конфет по количеству сахара

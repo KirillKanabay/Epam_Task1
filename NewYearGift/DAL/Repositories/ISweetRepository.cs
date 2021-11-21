@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NewYearGift.Domain.Models;
 using NewYearGift.Models;
 
 namespace NewYearGift.Repositories
