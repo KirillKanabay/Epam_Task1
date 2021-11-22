@@ -26,20 +26,5 @@ namespace NewYearGift.Domain.Models
         /// Содержит список позиций подарка
         /// </summary>
         public IList<GiftItem> Items { get; }
-
-        public override string ToString()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"Стоимость подарка: {TotalPrice:C2}");
-            sb.AppendLine($"Вес подарка: {TotalWeight} г.");
-            sb.AppendLine($"Список конфет:");
-            
-            foreach (var giftItem in Items)
-            {
-                sb.AppendLine($"{giftItem.Key}. {giftItem.Value.Sweet}, Количество: {giftItem.Value.Count}");
-            }
-
-            return sb.ToString();
-        }
     }
 }
