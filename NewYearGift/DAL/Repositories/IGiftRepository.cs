@@ -26,20 +26,6 @@ namespace NewYearGift.DAL.Repositories
         IReadOnlyList<Gift> ListAll();
         
         /// <summary>
-        /// Получение списка подарков по определенному предикату
-        /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
-        IReadOnlyList<Gift> List(Func<Gift, bool> predicate);
-        
-        /// <summary>
-        /// Получение отсортированных подарков
-        /// </summary>
-        /// <param name="comparer"></param>
-        /// <returns></returns>
-        IReadOnlyList<Gift> OrderBy(IComparer<Gift> comparer);
-        
-        /// <summary>
         /// Обновление подарка
         /// </summary>
         /// <param name="id"></param>
@@ -49,7 +35,7 @@ namespace NewYearGift.DAL.Repositories
         /// <summary>
         /// Удаление подарка
         /// </summary>
-        /// <param name="id"></param>
-        void Delete(int id);
+        /// <param name="gift"></param>
+        void Delete(Gift gift);
     }
 }

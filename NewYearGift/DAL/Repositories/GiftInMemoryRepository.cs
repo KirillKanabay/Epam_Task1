@@ -9,52 +9,31 @@ namespace NewYearGift.DAL.Repositories
     public class GiftInMemoryRepository : IGiftRepository
     {
         private readonly IDictionary<int, Gift> _giftsCollection;
-        private readonly IValidationService<Gift> _giftValidator;
         public GiftInMemoryRepository()
         {
             _giftsCollection = new Dictionary<int, Gift>();
-            _giftValidator = new GiftValidator();
         }
         public GiftInMemoryRepository(IDictionary<int, Gift> giftsCollection)
         {
-            _giftValidator = new GiftValidator();
             _giftsCollection = giftsCollection;
         }
-        
         public Gift GetById(int giftId)
         {
-            if (giftId < 0)
-            {
-                throw new ArgumentException("Gift's id cannot be null", nameof(giftId));
-            }
-
             return _giftsCollection[giftId];
         }
         public IReadOnlyList<Gift> ListAll()
         {
             return _giftsCollection.Values.ToList();
         }
-
-        public IReadOnlyList<Gift> List(Func<Gift, bool> predicate)
-        {
-            if (predicate == null)
-            {
-                throw new ArgumentNullException(nameof(predicate), "Predicate can't be null");
-            }
-            
-            return _giftsCollection.Values.Where(predicate).ToList();
-        }
-
         public void Add(Gift gift)
         {
-            _giftValidator.Validate(gift);
+            int newId = GetNewId();
+            gift.Id = newId;
             
             _giftsCollection.Add(gift.Id, gift);
         }
         public void Update(Gift gift)
         {
-            _giftValidator.Validate(gift);
-            
             int id = gift.Id;
             
             if (_giftsCollection.ContainsKey(id))
@@ -66,24 +45,16 @@ namespace NewYearGift.DAL.Repositories
                 _giftsCollection.Add(id, gift);
             }
         }
-        public void Delete(int giftId)
+        public void Delete(Gift gift)
         {
-            if (giftId < 0)
-            {
-                throw new ArgumentException("Gift's id can't be less than 0", nameof(giftId));
-            }
-            
-            if (!_giftsCollection.ContainsKey(giftId))
-            {
-                throw new ArgumentException($"Not found gift with id: {giftId}", nameof(giftId));
-            }
-
-            _giftsCollection.Remove(giftId);
+            _giftsCollection.Remove(gift.Id);
         }
-
-        public IReadOnlyList<Gift> OrderBy(IComparer<Gift> comparer)
+        
+        private int GetNewId()
         {
-            return _giftsCollection.Values.OrderBy(x => x, comparer).ToList();
+            int lastId = _giftsCollection.Keys.Max();
+
+            return lastId == 0 ? 0 : ++lastId;
         }
     }
 }

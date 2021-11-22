@@ -16,7 +16,7 @@ namespace NewYearGift.Domain.Models
         /// <summary>
         /// Идентификатор подарка
         /// </summary>
-        public int Id { get; }
+        public int Id { get; set; }
         /// <summary>
         /// Название подарка
         /// </summary>
