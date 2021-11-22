@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NewYearGift.BLL.Services.Validation;
 using NewYearGift.DAL.Repositories;
 using NewYearGift.Domain.Models;
 
@@ -8,34 +9,122 @@ namespace NewYearGift.BLL.Services
     public class GiftService : IGiftService
     {
         private readonly IGiftRepository _giftRepository;
-        public GiftService(IGiftRepository giftService)
+        private readonly IValidationService<Gift> _giftValidationService;
+        public GiftService(IGiftRepository giftService, IValidationService<Gift> giftValidationService)
         {
             _giftRepository = giftService;
+            _giftValidationService = giftValidationService;
         }
 
         public ServiceResponse<Gift> Add(Gift gift)
         {
-            throw new NotImplementedException();
+            if (gift == null)
+            {
+                return new ServiceResponse<Gift>()
+                {
+                    IsSuccess = false,
+                    Message = "Подарок не может быть NULL",
+                };
+            }
+
+            var validationResponse = _giftValidationService.Validate(gift);
+
+            if (validationResponse.HasError)
+            {
+                return new ServiceResponse<Gift>()
+                {
+                    IsSuccess = false,
+                    Message = validationResponse.Error,
+                };
+            }
+            
+            _giftRepository.Add(gift);
+
+            return new ServiceResponse<Gift>()
+            {
+                IsSuccess = true,
+                Message = "Подарок успешно добавлен",
+                Data = gift,
+            };
         }
 
         public ServiceResponse<Gift> GetById(int giftId)
         {
-            throw new NotImplementedException();
+            if (giftId < 0)
+            {
+                return new ServiceResponse<Gift>()
+                {
+                    IsSuccess = false,
+                    Message = "Id подарка не может быть меньше 0",
+                };
+            }
+
+            var foundGift = _giftRepository.GetById(giftId);
+
+            if (foundGift == null)
+            {
+                return new ServiceResponse<Gift>()
+                {
+                    IsSuccess = false,
+                    Message = $"Подарок с id {giftId} не найден",
+                };
+            }
+
+            return new ServiceResponse<Gift>()
+            {
+                IsSuccess = true,
+                Data = foundGift,
+            };
         }
 
-        public ServiceResponse<IEnumerable<Gift>> GetAll()
+        public ServiceResponse<IEnumerable<Gift>> ListAll()
         {
-            throw new NotImplementedException();
+            var gifts = _giftRepository.ListAll();
+            return new ServiceResponse<IEnumerable<Gift>>()
+            {
+                IsSuccess = true,
+                Data = gifts,
+            };
         }
 
         public ServiceResponse<Gift> Update(Gift gift)
         {
-            throw new NotImplementedException();
+            if (gift == null)
+            {
+                return new ServiceResponse<Gift>()
+                {
+                    IsSuccess = false,
+                    Message = "Подарок не может быть NULL",
+                };
+            }
+            
+            _giftRepository.Update(gift);
+
+            return new ServiceResponse<Gift>()
+            {
+                IsSuccess = true,
+                Data = gift,
+            };
         }
 
         public ServiceResponse<Gift> Delete(Gift gift)
         {
-            throw new NotImplementedException();
+            if (gift == null)
+            {
+                return new ServiceResponse<Gift>()
+                {
+                    IsSuccess = false,
+                    Message = "Подарок не может быть NULL",
+                };
+            }
+            
+            _giftRepository.Delete(gift);
+
+            return new ServiceResponse<Gift>()
+            {
+                IsSuccess = true,
+                Data = gift,
+            };
         }
     }
 }

@@ -5,17 +5,16 @@ namespace NewYearGift.BLL.Services.Validation
 {
     public class GiftValidator : IValidationService<Gift>
     {
-        public void Validate(Gift item)
+        public ValidationResponse Validate(Gift item)
         {
-            if (item == null)
-            {
-                throw new ArgumentNullException(nameof(item),"Gift can't be null");
-            }
+            var response = new ValidationResponse();
 
             if (string.IsNullOrWhiteSpace(item.Name))
             {
-                throw new ArgumentException("Gift's name can't be empty", nameof(item.Name));
+                response.AppendError("Имя подарка не может быть пустым");
             }
+
+            return response;
         }
     }
 }

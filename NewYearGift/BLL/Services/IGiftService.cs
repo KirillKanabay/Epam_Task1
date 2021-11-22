@@ -9,7 +9,7 @@ namespace NewYearGift.BLL.Services
     {
         ServiceResponse<Gift> Add(Gift gift);
         ServiceResponse<Gift> GetById(int giftId);
-        ServiceResponse<IEnumerable<Gift>> GetAll();
+        ServiceResponse<IEnumerable<Gift>> ListAll();
         ServiceResponse<Gift> Update(Gift gift);
         ServiceResponse<Gift> Delete(Gift gift);
     }
