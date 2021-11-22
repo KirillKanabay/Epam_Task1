@@ -58,9 +58,9 @@ namespace NewYearGift.DAL.Repositories
             }
         }
 
-        public void Delete(int sweetId)
+        public void Delete(Sweet sweet)
         {
-            _sweetsCollection.Remove(sweetId);
+            _sweetsCollection.Remove(sweet.Id);
         }
         
         private int GetNewId()

@@ -1,45 +1,130 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using NewYearGift.BLL.Services.Validation;
 using NewYearGift.DAL.Repositories;
 using NewYearGift.Domain.Models;
 
 namespace NewYearGift.BLL.Services
 {
-    public class SweetService
+    public class SweetService : ISweetService
     {
-        private readonly ISweetRepository _sweetService;
-
-        public SweetService(ISweetRepository sweetService)
+        private readonly ISweetRepository _sweetRepository;
+        private readonly IValidationService<Sweet> _sweetValidationService;
+        
+        public SweetService(ISweetRepository sweetRepository, IValidationService<Sweet> sweetValidationService)
         {
-            _sweetService = sweetService;
+            _sweetRepository = sweetRepository;
+            _sweetValidationService = sweetValidationService;
+        }
+        
+        public ServiceResponse<Sweet> Add(Sweet sweet)
+        {
+            if (sweet == null)
+            {
+                return new ServiceResponse<Sweet>()
+                {
+                    IsSuccess = false,
+                    Message = "Конфета не может быть NULL",
+                };
+            }
+
+            var validationResponse = _sweetValidationService.Validate(sweet);
+
+            if (validationResponse.HasError)
+            {
+                return new ServiceResponse<Sweet>()
+                {
+                    IsSuccess = false,
+                    Message = validationResponse.Error,
+                };
+            }
+            
+            _sweetRepository.Add(sweet);
+
+            return new ServiceResponse<Sweet>()
+            {
+                IsSuccess = true,
+                Message = "Конфета успешно добавлена",
+                Data = sweet,
+            };
         }
 
-        public List<Sweet> GetAll()
+        public ServiceResponse<Sweet> GetById(int sweetId)
         {
-            throw new NotImplementedException();
-            //return _sweetService.GetAll();
+            if (sweetId < 0)
+            {
+                return new ServiceResponse<Sweet>()
+                {
+                    IsSuccess = false,
+                    Message = "Id конфеты не может быть меньше 0",
+                };
+            }
+
+            var foundSweet = _sweetRepository.GetById(sweetId);
+
+            if (foundSweet == null)
+            {
+                return new ServiceResponse<Sweet>()
+                {
+                    IsSuccess = false,
+                    Message = $"Конфета с id {sweetId} не найдена",
+                };
+            }
+
+            return new ServiceResponse<Sweet>()
+            {
+                IsSuccess = true,
+                Data = foundSweet,
+            };
         }
 
-        public Sweet GetById(int id)
+        public ServiceResponse<IEnumerable<Sweet>> ListAll()
         {
-            return _sweetService.GetById(id);
+            var sweets = _sweetRepository.ListAll();
+            return new ServiceResponse<IEnumerable<Sweet>>()
+            {
+                IsSuccess = true,
+                Data = sweets,
+            };
         }
 
-        public Sweet Add(Sweet sweet)
+        public ServiceResponse<Sweet> Update(Sweet sweet)
         {
-            throw new NotImplementedException();
-            //return _sweetService.Add(sweet);
-        }
-        public Sweet Update(int id, Sweet sweet)
-        {
-            throw new NotImplementedException();
-            //return _sweetService.Update(id, sweet);
+            if (sweet == null)
+            {
+                return new ServiceResponse<Sweet>()
+                {
+                    IsSuccess = false,
+                    Message = "Конфета не может быть NULL",
+                };
+            }
+            
+            _sweetRepository.Update(sweet);
+
+            return new ServiceResponse<Sweet>()
+            {
+                IsSuccess = true,
+                Data = sweet,
+            };
         }
 
-        public Sweet Delete(int id)
+        public ServiceResponse<Sweet> Delete(Sweet sweet)
         {
-            throw new NotImplementedException();
-            // return _sweetService.Delete(id);
+            if (sweet == null)
+            {
+                return new ServiceResponse<Sweet>()
+                {
+                    IsSuccess = false,
+                    Message = "Конфета не может быть NULL",
+                };
+            }
+            
+            _sweetRepository.Delete(sweet);
+
+            return new ServiceResponse<Sweet>()
+            {
+                IsSuccess = true,
+                Data = sweet,
+            };
         }
     }
 }

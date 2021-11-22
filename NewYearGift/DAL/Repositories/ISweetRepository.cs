@@ -34,7 +34,7 @@ namespace NewYearGift.DAL.Repositories
         /// <summary>
         /// Удаление конфеты
         /// </summary>
-        /// <param name="id"></param>
-        void Delete(int id);
+        /// <param name="sweet"></param>
+        void Delete(Sweet sweet);
     }
 }
