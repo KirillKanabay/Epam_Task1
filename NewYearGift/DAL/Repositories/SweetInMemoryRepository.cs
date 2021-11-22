@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NewYearGift.BLL.Services.Validation;
 using NewYearGift.Domain.Models;
-using NewYearGift.Models;
 
-namespace NewYearGift.Repositories
+namespace NewYearGift.DAL.Repositories
 {
     class SweetInMemoryRepository : ISweetRepository
     {
         private readonly IDictionary<int, Sweet> _sweetsCollection;
-        private readonly IValidator<Sweet> _sweetValidator;
+        private readonly IValidationService<Sweet> _sweetValidator;
         public SweetInMemoryRepository()
         {
             _sweetsCollection = new Dictionary<int, Sweet>();

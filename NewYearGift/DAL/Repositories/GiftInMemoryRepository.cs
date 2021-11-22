@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using NewYearGift.BLL.Services.Validation;
 using NewYearGift.Domain.Models;
-using NewYearGift.Models;
 
-namespace NewYearGift.Repositories
+namespace NewYearGift.DAL.Repositories
 {
     public class GiftInMemoryRepository : IGiftRepository
     {
         private readonly IDictionary<int, Gift> _giftsCollection;
-        private readonly IValidator<Gift> _giftValidator;
+        private readonly IValidationService<Gift> _giftValidator;
         public GiftInMemoryRepository()
         {
             _giftsCollection = new Dictionary<int, Gift>();

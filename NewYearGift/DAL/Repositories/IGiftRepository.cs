@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using NewYearGift.Domain.Models;
-using NewYearGift.Models;
 
-namespace NewYearGift.Repositories
+namespace NewYearGift.DAL.Repositories
 {
     public interface IGiftRepository
     {

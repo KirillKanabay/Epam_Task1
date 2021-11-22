@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using NewYearGift.DAL.Repositories;
 using NewYearGift.Domain.Models;
-using NewYearGift.Repositories;
 
 namespace NewYearGift.BLL.Services
 {

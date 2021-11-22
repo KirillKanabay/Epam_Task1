@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using NewYearGift.BLL.Services;
+using NewYearGift.DAL.Repositories;
 using NewYearGift.Domain.Models;
 using NewYearGift.Helpers;
-using NewYearGift.Repositories;
 using NewYearGift.Views;
 
 namespace NewYearGift

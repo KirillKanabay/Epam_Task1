@@ -3,50 +3,48 @@ using NewYearGift.Domain.Models;
 
 namespace NewYearGift.BLL.Services.Validation
 {
-    public class SweetValidator : IValidator<Sweet>
+    public class SweetValidator : IValidationService<Sweet>
     {
-        public void Validate(Sweet item)
+        public ValidationResponse Validate(Sweet sweet)
         {
-            if (item == null)
+            var response = new ValidationResponse();
+            
+            if (sweet.Id < 0)
             {
-                throw new ArgumentNullException(nameof(item), "Sweet can't be null");
+                response.AppendError("Id конфеты не может быть меньше нуля");
             }
 
-            if (item.Id < 0)
+            if (string.IsNullOrWhiteSpace(sweet.Name))
             {
-                throw new ArgumentException("Sweet's id can't be less than 0", nameof(item.Id));
-            }
-
-            if (string.IsNullOrWhiteSpace(item.Name))
-            {
-                throw new ArgumentException("Sweet's name can't be empty", nameof(item.Name));
+                response.AppendError("Название конфеты не может быть пустым");
             }
             
-            if (string.IsNullOrWhiteSpace(item.Manufacturer))
+            if (string.IsNullOrWhiteSpace(sweet.Manufacturer))
             {
-                throw new ArgumentException("Sweet's manufacturer can't be empty", nameof(item.Manufacturer));
+                response.AppendError("У конфеты должен быть производитель");
             }
 
-            if (item.Price < 0)
+            if (sweet.Price < 0)
             {
-                throw new ArgumentException("Sweet's price can't be less than 0", nameof(item.Price));
+                response.AppendError("У конфеты не может быть стоимость меньше 0");
             }
 
-            if (item.Weight < 0)
+            if (sweet.Weight < 0)
             {
-                throw new ArgumentException("Sweet's weight can't be less than 0", nameof(item.Weight));
+                response.AppendError("У конфеты не может быть вес меньше 0");
             }
 
-            if (item.SugarWeight < 0)
+            if (sweet.SugarWeight < 0)
             {
-                throw new ArgumentException("Sweet's sugar weight can't be less than 0", nameof(item.SugarWeight));
+                response.AppendError("У конфеты не может быть вес сахара меньше 0");
             }
 
-            if (item.SugarWeight > item.Weight)
+            if (sweet.SugarWeight > sweet.Weight)
             {
-                throw new ArgumentException("Sweet's sugar weight can't be greater than sweet's weight",
-                    nameof(item.SugarWeight));
+                response.AppendError("Вес конфеты не может быть меньше веса сахара");
             }
+
+            return response;
         }
     }
 }
