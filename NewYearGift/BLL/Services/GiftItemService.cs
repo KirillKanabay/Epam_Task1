@@ -11,10 +11,13 @@ namespace NewYearGift.BLL.Services
     public class GiftItemsService : IGiftItemsService
     {
         private readonly IValidationService<SugarRange> _sugarRangeValidationService;
+        private readonly IValidationService<GiftItem> _giftItemValidationService;
+        public GiftItemsService(IValidationService<SugarRange> sugarRangeValidationService,
+                                IValidationService<GiftItem> giftItemValidationService)
         
-        public GiftItemsService(IValidationService<SugarRange> sugarRangeValidationService)
         {
             _sugarRangeValidationService = sugarRangeValidationService;
+            _giftItemValidationService = giftItemValidationService;
         }
         
         public ServiceResponse<GiftItem> GetById(Gift gift, int id)
@@ -156,7 +159,20 @@ namespace NewYearGift.BLL.Services
                     Message = "Элемент подарка не может быть NULL",
                 };
             }
-            
+
+            var giftItemValidationResponse = _giftItemValidationService.Validate(item);
+
+            if (giftItemValidationResponse.HasError)
+            {
+                return new ServiceResponse<Gift>()
+                {
+                    IsSuccess = false,
+                    Message = giftItemValidationResponse.Error,
+                };
+            }
+
+            int newId = GetNewId(gift);
+            item.Id = newId;
             gift.Items.Add(item);
 
             return new ServiceResponse<Gift>()
@@ -185,11 +201,24 @@ namespace NewYearGift.BLL.Services
                     Message = "Элемент подарка не может быть NULL",
                 };
             }
+            
+            var giftItemValidationResponse = _giftItemValidationService.Validate(item);
 
+            if (giftItemValidationResponse.HasError)
+            {
+                return new ServiceResponse<Gift>()
+                {
+                    IsSuccess = false,
+                    Message = giftItemValidationResponse.Error,
+                };
+            }
+            
             var foundGiftItem = gift.Items.FirstOrDefault(giftItem => giftItem.Id == item.Id);
 
             if (foundGiftItem == null)
             {
+                int newId = GetNewId(gift);
+                item.Id = newId;
                 gift.Items.Add(item);
             }
             
@@ -203,7 +232,7 @@ namespace NewYearGift.BLL.Services
             };
         }
 
-        public ServiceResponse<Gift> Delete(Gift gift, int id)
+        public ServiceResponse<Gift> Delete(Gift gift, GiftItem item)
         {
             if (gift == null)
             {
@@ -213,9 +242,17 @@ namespace NewYearGift.BLL.Services
                     Message = "Подарок не может быть NULL",
                 };
             }
-
-            var giftItemForDelete = gift.Items.FirstOrDefault(giftItem => giftItem.Id == id);
-            gift.Items.Remove(giftItemForDelete);
+            
+            if (item == null)
+            {
+                return new ServiceResponse<Gift>()
+                {
+                    IsSuccess = false,
+                    Message = "Элемент подарка не может быть NULL",
+                };
+            }
+            
+            gift.Items.Remove(item);
 
             return new ServiceResponse<Gift>()
             {
@@ -282,6 +319,12 @@ namespace NewYearGift.BLL.Services
                 IsSuccess = true,
                 Data = totalPrice,
             };
+        }
+
+        private int GetNewId(Gift gift)
+        {
+            int lastId = gift.Items.Max(giftItem => giftItem.Id);
+            return lastId == 0 ? 0 : ++lastId;
         }
     }
 }

@@ -7,7 +7,7 @@ namespace NewYearGift.Models
     /// </summary>
     public abstract class GiftItem
     {
-        public int Id { get; }
+        public int Id { get; set; }
         /// <summary>
         /// Конфета
         /// </summary>

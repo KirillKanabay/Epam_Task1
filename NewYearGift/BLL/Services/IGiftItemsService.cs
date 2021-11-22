@@ -13,7 +13,7 @@ namespace NewYearGift.BLL.Services
         ServiceResponse<IEnumerable<GiftItem>> OrderSweetsInGift(Gift gift, SweetsOrderRule sweetsOrderRule);
         ServiceResponse<Gift> Add(Gift gift, GiftItem item);
         ServiceResponse<Gift> Update(Gift gift, GiftItem item);
-        ServiceResponse<Gift> Delete(Gift gift, int id);
+        ServiceResponse<Gift> Delete(Gift gift, GiftItem item);
         ServiceResponse<int> SweetsCount(Gift gift);
         ServiceResponse<double> TotalWeight(Gift gift);
         ServiceResponse<decimal> TotalPrice(Gift gift);
