@@ -54,7 +54,7 @@ namespace NewYearGift.DAL.Repositories
         {
             int lastId = _giftsCollection.Keys.Max();
 
-            return lastId == 0 ? 0 : ++lastId;
+            return ++lastId;
         }
     }
 }

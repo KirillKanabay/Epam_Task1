@@ -1,37 +1,115 @@
 ﻿using System;
 using System.Collections.Generic;
+using NewYearGift.BLL.Models;
 using NewYearGift.BLL.Services;
+using NewYearGift.BLL.Services.Validation;
 using NewYearGift.DAL.Repositories;
 using NewYearGift.Domain.Models;
 using NewYearGift.Helpers;
+using NewYearGift.Models;
 using NewYearGift.Views;
 
 namespace NewYearGift
 {
     class Program
     {
-        private static readonly List<Sweet> SweetsList = new List<Sweet>()
+        private static readonly IDictionary<int, Sweet> SweetsList = new Dictionary<int, Sweet>()
         {
-            new ChocolateSweet("Ромашка", "Коммунарка", weight: 10.4d, sugarWeight: 4.2d, price: 0.50m, "Молочный"),
-            new ChocolateSweet("Черемуха", "Коммунарка", weight: 12.4d, sugarWeight: 3.5d, price: 0.45m, "Темный"),
-            new Lollipop("Леденец", "Коммунарка", weight: 8d, sugarWeight: 6d, price: 0.22m, "Дюшес"),
-            new Lollipop("Леденец", "Коммунарка", weight: 8d, sugarWeight: 6d, price: 0.22m, "Мята"),
-            new Lollipop("Леденец", "Коммунарка", weight: 8d, sugarWeight: 6d, price: 0.22m, "Барбарис"),
+            {
+                1,
+                new ChocolateSweet()
+                {
+                    Id = 1,
+                    Name = "Ромашка",
+                    Manufacturer = "Коммунарка",
+                    Weight = 10.4d,
+                    SugarWeight = 4.2d,
+                    Price = 0.5m,
+                    KindOfChocolate = "Молочный",
+                } 
+            },
+            {
+              2,
+              new ChocolateSweet()
+              {
+                  Id = 2,
+                  Name = "Черемуха",
+                  Manufacturer = "Коммунарка",
+                  Weight = 12.4d,
+                  SugarWeight = 3.5d,
+                  Price = 0.45m,
+                  KindOfChocolate = "Темный",
+              } 
+            },
+            {
+                3,
+                new Lollipop()
+                {
+                    Id = 3,
+                    Name = "Леденец",
+                    Manufacturer = "Коммунарка",
+                    Weight = 8d,
+                    SugarWeight = 6d,
+                    Price = 0.22m,
+                    Flavor = "Дюшес",
+                } 
+            },
+            {
+                4,
+                new Lollipop()
+                {
+                    Id = 4,
+                    Name = "Леденец",
+                    Manufacturer = "Коммунарка",
+                    Weight = 8d,
+                    SugarWeight = 6d,
+                    Price = 0.22m,
+                    Flavor = "Мята",
+                } 
+            },
+            {
+                5,
+                new Lollipop()
+                {
+                    Id = 5,
+                    Name = "Леденец",
+                    Manufacturer = "Коммунарка",
+                    Weight = 8d,
+                    SugarWeight = 6d,
+                    Price = 0.22m,
+                    Flavor = "Барбарис",
+                } 
+            },
         };
-
-
+        
         private static ISweetRepository _sweetRepository;
         private static IGiftRepository _giftRepository;
+        
+        private static IGiftService _giftService;
+        private static IGiftItemsService _giftItemsService;
+        
+        private static IValidationService<Gift> _giftValidationService;
+        private static IValidationService<GiftItem> _giftItemValidationService;
+        private static IValidationService<SugarRange> _sugarRangeValidationService;
+        private static IValidationService<Sweet> _sweetValidationService;
+        
         private static GiftView _giftView;
         private static SweetView _sweetView;
-        private static GiftService _giftController;
-        private static SweetService _sweetController;
+        
+
+        // private static ISweetService _sweetController;
         private static void InitDependencies()
         {
             _giftRepository = new GiftInMemoryRepository();
             _sweetRepository = new SweetInMemoryRepository();
 
-            _giftController = new GiftService(_giftRepository, _sweetRepository);
+            _sweetValidationService = new SweetValidationService();
+            _giftValidationService = new GiftValidationService();
+            _giftItemValidationService = new GiftItemValidationService(_sweetValidationService);
+            _sugarRangeValidationService = new SugarRangeValidationService();
+            
+            _giftService = new GiftService(_giftRepository, _giftValidationService);
+            _giftItemsService = new GiftItemsService(_sugarRangeValidationService, _giftItemValidationService);
             _sweetController = new SweetService(_sweetRepository);
 
             _giftView = new GiftView(_giftController, _sweetController);

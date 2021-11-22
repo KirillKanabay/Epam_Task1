@@ -12,6 +12,10 @@ namespace NewYearGift.Domain.Models
         /// </summary>
         public string KindOfChocolate { get; set; }
 
+        public ChocolateSweet()
+        {
+            
+        }
         public ChocolateSweet(int id, string name) : base(id, name) { }
         
         public override string ToString()

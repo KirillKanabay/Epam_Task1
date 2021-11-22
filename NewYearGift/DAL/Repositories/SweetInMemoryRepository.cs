@@ -67,7 +67,7 @@ namespace NewYearGift.DAL.Repositories
         {
             int lastId = _sweetsCollection.Keys.Max();
 
-            return lastId == 0 ? 0 : ++lastId;
+            return ++lastId;
         }
     }
 }

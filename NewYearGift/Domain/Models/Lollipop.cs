@@ -11,7 +11,11 @@ namespace NewYearGift.Domain.Models
         /// Вкус 
         /// </summary>
         public string Flavor { get; set; }
-        
+
+        public Lollipop()
+        {
+            
+        }
         public Lollipop(int id, string name) : base(id, name) {}
 
         public override string ToString()

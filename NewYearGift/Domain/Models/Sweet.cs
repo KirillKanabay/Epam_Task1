@@ -35,6 +35,10 @@
         /// </summary>
         public decimal Price { get; set; }
 
+        protected Sweet()
+        {
+            
+        }
         protected Sweet(int id, string name)
         {
             Id = id;

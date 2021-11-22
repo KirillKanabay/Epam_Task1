@@ -324,7 +324,7 @@ namespace NewYearGift.BLL.Services
         private int GetNewId(Gift gift)
         {
             int lastId = gift.Items.Max(giftItem => giftItem.Id);
-            return lastId == 0 ? 0 : ++lastId;
+            return ++lastId;
         }
     }
 }

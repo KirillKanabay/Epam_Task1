@@ -3,7 +3,7 @@ using NewYearGift.Domain.Models;
 
 namespace NewYearGift.BLL.Services.Validation
 {
-    public class SweetValidator : IValidationService<Sweet>
+    public class SweetValidationService : IValidationService<Sweet>
     {
         public ValidationResponse Validate(Sweet sweet)
         {

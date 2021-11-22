@@ -4,10 +4,10 @@ using NewYearGift.Models;
 
 namespace NewYearGift.BLL.Services.Validation
 {
-    public class GiftItemValidator : IValidationService<GiftItem>
+    public class GiftItemValidationService : IValidationService<GiftItem>
     {
         private readonly IValidationService<Sweet> _sweetValidationService;
-        public GiftItemValidator(IValidationService<Sweet> sweetValidationService)
+        public GiftItemValidationService(IValidationService<Sweet> sweetValidationService)
         {
             _sweetValidationService = sweetValidationService;
         }
