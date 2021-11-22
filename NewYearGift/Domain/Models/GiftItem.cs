@@ -18,6 +18,10 @@ namespace NewYearGift.Models
         /// </summary>
         public int Count { get; }
 
+        public GiftItem()
+        {
+            
+        }
         public GiftItem(int id, Sweet sweet, int count)
         {
             Id = id;

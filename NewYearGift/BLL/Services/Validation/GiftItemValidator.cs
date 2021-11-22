@@ -1,26 +1,39 @@
 ﻿using System;
+using NewYearGift.Domain.Models;
 using NewYearGift.Models;
 
 namespace NewYearGift.BLL.Services.Validation
 {
     public class GiftItemValidator : IValidationService<GiftItem>
     {
-        public void Validate(GiftItem item)
+        private readonly IValidationService<Sweet> _sweetValidationService;
+        public GiftItemValidator(IValidationService<Sweet> sweetValidationService)
         {
-            if (item == null)
+            _sweetValidationService = sweetValidationService;
+        }
+        
+        public ValidationResponse Validate(GiftItem giftItem)
+        {
+            var response = new ValidationResponse();
+            
+            if (giftItem.Sweet == null)
             {
-                throw new ArgumentNullException(nameof(item), "GiftItem can't be null");
+                response.AppendError("Конфета не может быть null");
             }
 
-            if (item.Sweet == null)
+            var sweetValidationResponse = _sweetValidationService.Validate(giftItem.Sweet);
+
+            if (sweetValidationResponse.HasError)
             {
-                throw new ArgumentException("Sweet can't be null", nameof(item.Count));
+                response.AppendErrorList(sweetValidationResponse.Errors);
             }
             
-            if (item.Count <= 0)
+            if (giftItem.Count <= 0)
             {
-                throw new ArgumentException("Sweets count can't be less than 0", nameof(item.Count));
+                response.AppendError("Количество конфет не может быть меньше или равно 0");
             }
+
+            return response;
         }
     }
 }

@@ -22,5 +22,13 @@ namespace NewYearGift.BLL.Services.Validation
             Error += $"{error}\n";
             _errors.Add(error);
         }
+
+        public void AppendErrorList(IEnumerable<string> errors)
+        {
+            foreach (var error in errors)
+            {
+                AppendError(error);
+            }
+        }
     }
 }
