@@ -7,11 +7,11 @@ namespace NewYearGift.Views
 {
     public class SweetView
     {
-        private readonly SweetService _sweetController;
+        private readonly SweetService _sweetService;
 
-        public SweetView(SweetService sweetController)
+        public SweetView(SweetService sweetService)
         {
-            _sweetController = sweetController;
+            _sweetService = sweetService;
         }
 
         public void Show()
@@ -64,7 +64,8 @@ namespace NewYearGift.Views
                     Environment.Exit(0);
                     break;
                 default:
-                    throw new ArgumentException("Введенной команды не существует. Введите help для помощи.");
+                    ConsoleExtensions.WriteLineError("Введенной команды не существует. Введите help для помощи.");
+                    break;
             }
         }
 
@@ -89,6 +90,7 @@ namespace NewYearGift.Views
                         2 => new Lollipop(),
                         _ => throw new ArgumentException("Неверный тип сладости.")
                     };
+                    
                     Console.Write("Название:");
                     sweet.Name = Console.ReadLine();
 
@@ -160,15 +162,16 @@ namespace NewYearGift.Views
             Clear();
         }
 
-        private void ShowSweets()
+        public void ShowSweets()
         {
             Clear();
             Console.WriteLine($"{Environment.NewLine}" +
                               "Список доступных сладостей:");
-            var sweetsList = _sweetController.GetAll();
-            for (int sweetIdx = 0; sweetIdx < sweetsList.Count; sweetIdx++)
+            var sweetsList = _sweetService.ListAll().Data;
+            
+            foreach (var sweet in sweetsList)
             {
-                Console.WriteLine($"Id:{sweetIdx}, {sweetsList[sweetIdx]}");
+                Console.WriteLine(sweet);    
             }
         }
 

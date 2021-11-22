@@ -5,18 +5,18 @@ namespace NewYearGift.Models
     /// <summary>
     /// Позиция в подарке
     /// </summary>
-    public abstract class GiftItem
+    public class GiftItem
     {
         public int Id { get; set; }
         /// <summary>
         /// Конфета
         /// </summary>
-        public Sweet Sweet { get; }
+        public Sweet Sweet { get; set; }
         
         /// <summary>
         /// Количество конфет
         /// </summary>
-        public int Count { get; }
+        public int Count { get; set; }
 
         public GiftItem()
         {

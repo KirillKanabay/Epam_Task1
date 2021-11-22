@@ -87,6 +87,7 @@ namespace NewYearGift
         
         private static IGiftService _giftService;
         private static IGiftEditorService _giftItemsService;
+        private static ISweetService _sweetService;
         
         private static IValidationService<Gift> _giftValidationService;
         private static IValidationService<GiftItem> _giftItemValidationService;
@@ -110,7 +111,7 @@ namespace NewYearGift
             
             _giftService = new GiftService(_giftRepository, _giftValidationService);
             _giftItemsService = new GiftEditorService(_sugarRangeValidationService, _giftItemValidationService);
-            _sweetController = new SweetService(_sweetRepository);
+            _sweetService = new SweetService(_sweetRepository, _sweetValidationService);
 
             _giftView = new GiftView(_giftController, _sweetController);
             _sweetView = new SweetView(_sweetController);

@@ -1,42 +1,39 @@
 ﻿using System;
+using NewYearGift.BLL.Models;
 using NewYearGift.BLL.Services;
 using NewYearGift.Domain.Models;
 using NewYearGift.Helpers;
+using NewYearGift.Models;
 
 namespace NewYearGift.Views
 {
     public class GiftView
     {
-        private readonly GiftService _giftController;
-        private readonly SweetService _sweetController;
-        public GiftView(GiftService giftController, SweetService sweetController)
+        private readonly IGiftService _giftService;
+        private readonly ISweetService _sweetService;
+        private readonly IGiftEditorService _giftEditorService;
+        public GiftView(IGiftService giftService, ISweetService sweetService, IGiftEditorService giftEditorService)
         {
-            _giftController = giftController;
-            _sweetController = sweetController;
+            _giftService = giftService;
+            _sweetService = sweetService;
+            _giftEditorService = giftEditorService;
         }
         public void Show()
         {
             ShowHelp();
             while (true)
             {
-                try
-                {
-                    Console.WriteLine();
-                    Console.Write(">>");
-                    string command = Console.ReadLine();
+                Console.WriteLine();
+                Console.Write(">>");
+                string command = Console.ReadLine();
 
-                    if (command == "back")
-                    {
-                        Program.Clear();
-                        break;
-                    }
-
-                    DoCommand(command);
-                }
-                catch (Exception e)
+                if (command == "back")
                 {
-                    ConsoleExtensions.WriteLineError(e.Message);
+                    Program.Clear();
+                    break;
                 }
+
+                DoCommand(command);
             }
         }
         private void DoCommand(string command)
@@ -56,7 +53,7 @@ namespace NewYearGift.Views
                     DeleteGift();
                     break;
                 case "show-gifts":
-                    ShowGifts();
+                    ShowAllGifts();
                     break;
                 case "show-gift":
                     ShowGift();
@@ -71,7 +68,8 @@ namespace NewYearGift.Views
                     Environment.Exit(0);
                     break;
                 default:
-                    throw new ArgumentException("Введенной команды не существует. Введите help для помощи.");
+                    ConsoleExtensions.WriteLineError("Введенной команды не существует. Введите help для помощи.");
+                    break;
             }
         }
         private void ShowHelp()
@@ -91,18 +89,18 @@ namespace NewYearGift.Views
         }
         private void ShowGift()
         {
-            int giftId = SelectGift();
-            if (giftId == -1)
+            var gift = SelectGiftById();
+            if (gift == null)
             {
                 return;
             }
 
-            Console.WriteLine(_giftController.GetById(giftId));
+            Console.WriteLine(gift);
         }
         private void OrderGift()
         {
-            int giftId = SelectGift();
-            if (giftId == -1)
+            Gift gift = SelectGiftById();
+            if (gift == null)
             {
                 return;
             }
@@ -118,87 +116,76 @@ namespace NewYearGift.Views
             do
             {
                 Console.Write($"{Environment.NewLine}" +
-                              "Введите номер сортировки (оставьте строку пустой для отмены ввода):");
+                              "Введите номер сортировки (оставьте строку пустой для отмены ввода или введите -1):");
                 sortId = int.Parse(Console.ReadLine() ?? "-1");
-                try
-                {
-                    _giftController.OrderSweetsInGift(giftId, (SweetsOrderRule)sortId);
-                    break;
-                }
-                catch (Exception e)
-                {
-                    ConsoleExtensions.WriteLineError(e.Message);
-                }
+                _giftEditorService.OrderSweetsInGift(gift, (SweetsOrderRule)sortId);
             } while (sortId != -1);
             Clear();
         }
-        private int SelectGift()
+        private Gift SelectGiftById()
         {
             Clear();
-            ShowGifts();
+            ShowAllGifts();
+
+            Gift gift = null;
 
             int giftId;
             do
             {
                 Console.Write($"{Environment.NewLine}" +
-                              "Введите id подарка (оставьте строку пустой для отмены ввода):");
+                              "Введите id подарка (оставьте строку пустой для отмены ввода или введите -1):");
+                
                 giftId = int.Parse(Console.ReadLine() ?? "-1");
-                try
+
+                var response = _giftService.GetById(giftId);
+                if (!response.IsSuccess)
                 {
-                    var gift = _giftController.GetById(giftId);
-                    break;
+                    ConsoleExtensions.WriteLineError(response.Message);
                 }
-                catch (Exception e)
+                else
                 {
-                    ConsoleExtensions.WriteLineError(e.Message);
+                    gift = response.Data;
+                    break;
                 }
             } while (giftId != -1);
 
-            return giftId;
+            return gift;
         }
-        private void ShowGifts()
+        private void ShowAllGifts()
         {
             Clear();
             Console.WriteLine($"{Environment.NewLine}" +
                               $"Список подарков:");
-            var giftsList = _giftController.GetAll();
-            for (int giftIdx = 0; giftIdx < giftsList.Count; giftIdx++)
+            
+            var giftsList = _giftService.ListAll().Data;
+            
+            foreach (var gift in giftsList)
             {
-                var gift = giftsList[giftIdx];
-                Console.WriteLine($"Id:{giftIdx}, Название: {gift.Name}, суммарный вес:{gift.TotalWeight} г., суммарная стоимость: {gift.TotalPrice:C2}");
+                double totalWeight = _giftEditorService.TotalWeight(gift).Data;
+                decimal totalPrice = _giftEditorService.TotalPrice(gift).Data;
+                
+                Console.WriteLine($"Id:{gift.Id}, Название: {gift.Name}, суммарный вес:{totalWeight} г.," +
+                                  $" суммарная стоимость: {totalPrice:C2}");    
             }
         }
         private void DeleteGift()
         {
-            Clear();
-            ShowGifts();
-
-            int id;
-            do
+            while (true)
             {
-                Console.Write($"{Environment.NewLine}" +
-                              "Введите id подарка (оставьте строку пустой для отмены ввода):");
-                id = int.Parse(Console.ReadLine() ?? "-1");
-                try
+                var gift = SelectGiftById();
+                if (gift == null)
                 {
-                    _giftController.Delete(id);
-                    if (ConsoleExtensions.CheckContinue("Удалить еще одну запись? (y/n):")) continue;
-                    Clear();
-                    break;
-
+                    return;
                 }
-                catch (Exception e)
-                {
-                    ConsoleExtensions.WriteLineError(e.Message);
-                }
-            } while (id != -1);
-
-            Clear();
+                _giftService.Delete(gift);
+            
+                if (ConsoleExtensions.CheckContinue("Удалить еще одну запись? (y/n):")) break;    
+            }
         }
         private void MakeGift()
         {
-            int giftId = SelectGift();
-            if (giftId == -1)
+            var gift = SelectGiftById();
+            if (gift == null)
             {
                 return;
             }
@@ -209,19 +196,25 @@ namespace NewYearGift.Views
             do
             {
                 Console.Write($"{Environment.NewLine}" +
-                              "Введите id сладости (оставьте строку пустой для отмены ввода):");
+                              "Введите id сладости (оставьте строку пустой для отмены ввода или введите -1):");
                 sweetId = int.Parse(Console.ReadLine() ?? "-1");
-                try
-                {
-                    Console.Write("Введите количество сладостей:");
-                    int count = int.Parse(Console.ReadLine() ?? "1");
 
-                    _giftController.AddSweetToGift(giftId, sweetId, count);
-                }
-                catch (Exception e)
+                var sweetServiceResponse = _sweetService.GetById(sweetId);
+                if (!sweetServiceResponse.IsSuccess)
                 {
-                    ConsoleExtensions.WriteLineError(e.Message);
+                    ConsoleExtensions.WriteLineError(sweetServiceResponse.Message);
+                    continue;
                 }
+                
+                Console.Write("Введите количество сладостей:");
+                int count = int.Parse(Console.ReadLine() ?? "1");
+                
+                _giftEditorService.Add(gift, new GiftItem()
+                {
+                    Sweet = sweetServiceResponse.Data,
+                    Count = count
+                });
+                
             } while (sweetId != -1);
         }
         private void AddGift()
@@ -229,25 +222,18 @@ namespace NewYearGift.Views
             Clear();
             while (true)
             {
-                try
-                {
-                    Console.Write("Введите название подарка:");
-                    Gift gift = new Gift(Console.ReadLine());
-                    _giftController.Add(gift);
-                    Clear();
+                Console.Write("Введите название подарка:");
+                string giftName = Console.ReadLine();
+                Gift gift = new Gift() {Name = giftName};
+                var giftServiceResponse = _giftService.Add(gift);
 
-                    if (ConsoleExtensions.CheckContinue("Добавить еще одну запись? (y/n):")) continue;
-                    Clear();
-                    break;
-                }
-                catch (Exception e)
+                if (!giftServiceResponse.IsSuccess)
                 {
-                    ConsoleExtensions.WriteLineError(e.Message);
-
-                    if (ConsoleExtensions.CheckContinue("Добавить еще одну запись? (y/n):")) continue;
-                    Clear();
-                    break;
+                    ConsoleExtensions.WriteLineError(giftServiceResponse.Message);
                 }
+                
+                if (!ConsoleExtensions.CheckContinue("Добавить еще одну запись? (y/n):")) break;
+                Clear();
             }
         }
         private void ShowSweets()
@@ -255,38 +241,42 @@ namespace NewYearGift.Views
             Clear();
             Console.WriteLine($"{Environment.NewLine}" +
                               "Список доступных сладостей:");
-            var sweetsList = _sweetController.GetAll();
-            for (int sweetIdx = 0; sweetIdx < sweetsList.Count; sweetIdx++)
+            var sweetsList = _sweetService.ListAll().Data;
+            
+            foreach (var sweet in sweetsList)
             {
-                Console.WriteLine($"Id:{sweetIdx}, {sweetsList[sweetIdx]}");
+                Console.WriteLine(sweet);    
             }
         }
         private void SugarRange()
         {
-            int giftId = SelectGift();
-            if (giftId == -1)
+            var gift = SelectGiftById();
+            if (gift == null)
             {
                 return;
             }
 
             Console.Write("Введите начальное содержание сахара:");
-            int startValue = int.Parse(Console.ReadLine());
+            int minWeight = int.Parse(Console.ReadLine());
 
             Console.Write("Введите конечное содержание сахара:");
-            int endValue = int.Parse(Console.ReadLine());
+            int maxWeight = int.Parse(Console.ReadLine());
 
-            try
+            var sugarRange = new SugarRange(minWeight, maxWeight);
+            
+            var giftEditorResponse = _giftEditorService.GetSweetsBySugarRange(gift, sugarRange);
+            if (!giftEditorResponse.IsSuccess)
             {
-                var sweet = _giftController.FindSweetBySugarRange(giftId, startValue, endValue);
-                Console.WriteLine(sweet == null ? "Такой конфеты не обнаружено" : sweet.ToString());
+                ConsoleExtensions.WriteLineError(giftEditorResponse.Message);
+                return;
             }
-            catch (Exception e)
+
+            foreach (var sweet in giftEditorResponse.Data)
             {
-                Console.WriteLine(e);
-                throw;
+                Console.WriteLine(sweet);
             }
         }
-        public void Clear()
+        private void Clear()
         {
             Console.Clear();
             Console.WriteLine("==== Управление подарками. Введите help - для справки ====");
