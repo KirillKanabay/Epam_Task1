@@ -5,7 +5,7 @@ using NewYearGift.Models;
 
 namespace NewYearGift.BLL.Services
 {
-    public interface IGiftItemsService
+    public interface IGiftEditorService
     {
         ServiceResponse<GiftItem> GetById(Gift gift, int id);
         ServiceResponse<IEnumerable<GiftItem>> ListAll(Gift gift);

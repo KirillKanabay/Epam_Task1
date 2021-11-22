@@ -8,11 +8,11 @@ using NewYearGift.Models;
 
 namespace NewYearGift.BLL.Services
 {
-    public class GiftItemsService : IGiftItemsService
+    public class GiftEditorService : IGiftEditorService
     {
         private readonly IValidationService<SugarRange> _sugarRangeValidationService;
         private readonly IValidationService<GiftItem> _giftItemValidationService;
-        public GiftItemsService(IValidationService<SugarRange> sugarRangeValidationService,
+        public GiftEditorService(IValidationService<SugarRange> sugarRangeValidationService,
                                 IValidationService<GiftItem> giftItemValidationService)
         
         {
