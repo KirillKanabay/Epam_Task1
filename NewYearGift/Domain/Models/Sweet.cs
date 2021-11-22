@@ -8,7 +8,7 @@
         /// <summary>
         /// Идентификатор конфеты
         /// </summary>
-        public int Id { get; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Название конфеты

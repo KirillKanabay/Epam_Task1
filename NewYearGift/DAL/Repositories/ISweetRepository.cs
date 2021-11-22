@@ -24,21 +24,7 @@ namespace NewYearGift.DAL.Repositories
         /// </summary>
         /// <returns></returns>
         IReadOnlyList<Sweet> ListAll();
-        
-        /// <summary>
-        /// Получение списка конфет по определенному предикату
-        /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
-        IReadOnlyList<Sweet> List(Func<Sweet, bool> predicate);
-        
-        /// <summary>
-        /// Получение отсортированных конфет
-        /// </summary>
-        /// <param name="comparer"></param>
-        /// <returns></returns>
-        IReadOnlyList<Sweet> OrderBy(IComparer<Sweet> comparer);
-        
+
         /// <summary>
         /// Обновление конфеты, если ее не существует, добавляется новая
         /// </summary>
