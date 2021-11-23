@@ -13,7 +13,7 @@ namespace NewYearGift
 {
     class Program
     {
-        private static readonly IDictionary<int, Sweet> SweetsList = new Dictionary<int, Sweet>()
+        private static readonly IDictionary<int, Sweet> SweetsCollection = new Dictionary<int, Sweet>()
         {
             {
                 1,
@@ -86,23 +86,22 @@ namespace NewYearGift
         private static IGiftRepository _giftRepository;
         
         private static IGiftService _giftService;
-        private static IGiftEditorService _giftItemsService;
+        private static IGiftEditorService _giftEditorService;
         private static ISweetService _sweetService;
         
         private static IValidationService<Gift> _giftValidationService;
         private static IValidationService<GiftItem> _giftItemValidationService;
         private static IValidationService<SugarRange> _sugarRangeValidationService;
         private static IValidationService<Sweet> _sweetValidationService;
-        
-        private static GiftView _giftView;
-        private static SweetView _sweetView;
-        
 
-        // private static ISweetService _sweetController;
+        private static IView _mainView;
+        private static IItemView<Gift> _giftView;
+        private static IItemView<Sweet> _sweetView;
+        
         private static void InitDependencies()
         {
             _giftRepository = new GiftInMemoryRepository();
-            _sweetRepository = new SweetInMemoryRepository();
+            _sweetRepository = new SweetInMemoryRepository(SweetsCollection);
 
             _sweetValidationService = new SweetValidationService();
             _giftValidationService = new GiftValidationService();
@@ -110,85 +109,19 @@ namespace NewYearGift
             _sugarRangeValidationService = new SugarRangeValidationService();
             
             _giftService = new GiftService(_giftRepository, _giftValidationService);
-            _giftItemsService = new GiftEditorService(_sugarRangeValidationService, _giftItemValidationService);
+            _giftEditorService = new GiftEditorService(_sugarRangeValidationService, _giftItemValidationService);
             _sweetService = new SweetService(_sweetRepository, _sweetValidationService);
 
-            _giftView = new GiftView(_giftController, _sweetController);
-            _sweetView = new SweetView(_sweetController);
+            _sweetView = new SweetView(_sweetService);
+            _giftView = new GiftView(_giftService, _giftEditorService, _sweetView);
+            _mainView = new MainView(_giftView, _sweetView);
         }
 
         static void Main(string[] args)
         {
             InitDependencies();
 
-            Console.Title = "Сборщик новогодних подарков";
-            Clear();
-            ShowHelp();
-            while (true)
-            {
-                try
-                {
-                    Console.WriteLine();
-                    Console.Write(">>");
-                    DoCommand(Console.ReadLine());
-                }
-                catch (Exception e)
-                {
-                    ConsoleExtensions.WriteLineError(e.Message);
-                }
-            }
-        }
-        public static void Clear()
-        {
-            Console.Clear();
-            Console.WriteLine("==== Сборщик новогодних подарков. Введите help - для справки ====");
-        }
-
-        /// <summary>
-        /// Метод выводящий справку
-        /// </summary>
-        private static void ShowHelp()
-        {
-            Clear();
-            Console.WriteLine($"Доступные команды: {Environment.NewLine}" +
-                              $"Управление подарками: gifts {Environment.NewLine}" +
-                              $"Управление сладостями: sweets {Environment.NewLine}");
-        }
-        /// <summary>
-        /// Метод выполняющий введенные команды
-        /// </summary>
-        /// <param name="command"></param>
-        private static void DoCommand(string command)
-        {
-            switch (command.ToLower())
-            {
-                case "help":
-                    Console.Clear();
-                    ShowHelp();
-                    break;
-                case "gifts":
-                    _giftView.Show();
-                    break;
-                case "sweets":
-                    _sweetView.Show();
-                    break;
-                case "exit":
-                    Environment.Exit(0);
-                    break;
-                default:
-                    throw new ArgumentException("Введенной команды не существует. Введите help для помощи.");
-            }
-        }
-        
-        private static void OrderGift()
-        {
-            Console.WriteLine($"Отсортировать список конфет по:{Environment.NewLine}" +
-                              $"1. Имени{Environment.NewLine}" +
-                              $"2. Производителю{Environment.NewLine}" +
-                              $"3. Весу{Environment.NewLine}" +
-                              $"4. Количеству сахара{Environment.NewLine}" +
-                              $"5. Стоимости{Environment.NewLine}" +
-                              $"6. Количеству.{Environment.NewLine}");
+            _mainView.Show();
         }
     }
 }

@@ -5,15 +5,13 @@ using NewYearGift.Helpers;
 
 namespace NewYearGift.Views
 {
-    public class SweetView
+    public class SweetView : IItemView<Sweet>
     {
-        private readonly SweetService _sweetService;
-
-        public SweetView(SweetService sweetService)
+        private readonly ISweetService _sweetService;
+        public SweetView(ISweetService sweetService)
         {
             _sweetService = sweetService;
         }
-
         public void Show()
         {
             ShowHelp();
@@ -27,7 +25,6 @@ namespace NewYearGift.Views
                     
                     if (command == "back")
                     {
-                        Program.Clear();
                         break;
                     }
                     
@@ -39,7 +36,6 @@ namespace NewYearGift.Views
                 }
             }
         }
-
         private void DoCommand(string command)
         {
             switch (command.ToLower())
@@ -58,7 +54,7 @@ namespace NewYearGift.Views
                     break;
                 case "show-sweets":
                     Clear();
-                    ShowSweets();
+                    ShowAll();
                     break;
                 case "exit":
                     Environment.Exit(0);
@@ -68,15 +64,41 @@ namespace NewYearGift.Views
                     break;
             }
         }
+        public Sweet SelectById()
+        {
+            Clear();
+            ShowAll();
 
+            Sweet sweet = null;
+
+            int sweetId;
+            do
+            {
+                Console.Write($"{Environment.NewLine}" +
+                              "Введите id подарка (оставьте строку пустой для отмены ввода или введите -1):");
+                
+                sweetId = int.Parse(Console.ReadLine() ?? "-1");
+
+                var response = _sweetService.GetById(sweetId);
+                if (!response.IsSuccess)
+                {
+                    ConsoleExtensions.WriteLineError(response.Message);
+                }
+                else
+                {
+                    sweet = response.Data;
+                    break;
+                }
+            } while (sweetId != -1);
+
+            return sweet;
+        }
         private void AddSweet()
         {
             Clear();
             while (true)
             {
-                try
-                {
-                    Console.WriteLine($"{Environment.NewLine}" +
+                Console.WriteLine($"{Environment.NewLine}" +
                                       $"Введите номер типа сладости:{Environment.NewLine}" +
                                       $"Шоколадная конфета: 1 {Environment.NewLine}" +
                                       $"Леденец: 2 {Environment.NewLine}");
@@ -88,8 +110,14 @@ namespace NewYearGift.Views
                     {
                         1 => new ChocolateSweet(),
                         2 => new Lollipop(),
-                        _ => throw new ArgumentException("Неверный тип сладости.")
+                        _ => null
                     };
+
+                    if (sweet == null)
+                    {
+                        ConsoleExtensions.WriteLineError("Неверный тип сладостей");
+                        continue;
+                    }
                     
                     Console.Write("Название:");
                     sweet.Name = Console.ReadLine();
@@ -117,52 +145,28 @@ namespace NewYearGift.Views
                         ((Lollipop) sweet).Flavor = Console.ReadLine();
                     }
 
-                    _sweetController.Add(sweet);
+                    var response = _sweetService.Add(sweet);
+                    if (!response.IsSuccess)
+                    {
+                        ConsoleExtensions.WriteLineError(response.Message);
+                    }
+                    if (!ConsoleExtensions.CheckContinue("Добавить еще одну запись? (y/n):")) break;
                     
                     Clear();
-
-                    if (ConsoleExtensions.CheckContinue("Добавить еще одну запись? (y/n):")) continue;
-                    Clear();
-                    break;
-                }
-                catch (Exception e)
-                {
-                    ConsoleExtensions.WriteLineError(e.Message);
-
-                    if (ConsoleExtensions.CheckContinue("Добавить еще одну запись? (y/n):")) continue;
-                    Clear();
-                    break;
-                }
-                
             }
            
         }
-
         private void DeleteSweet()
         {
-            Clear();
-            ShowSweets();
-
-            int id;
-            do
+            var sweet = SelectById();
+            var response = _sweetService.Delete(sweet);
+            if (!response.IsSuccess)
             {
-                Console.Write($"{Environment.NewLine}" +
-                              "Введите id сладости (оставьте строку пустой для отмены ввода):");
-                id = int.Parse(Console.ReadLine() ?? "-1");
-                try
-                {
-                    _sweetController.Delete(id);
-                }
-                catch (Exception e)
-                {
-                    ConsoleExtensions.WriteLineError(e.Message);
-                }
-            } while (id != -1);
-
+                ConsoleExtensions.WriteLineError(response.Message);
+            }
             Clear();
         }
-
-        public void ShowSweets()
+        public void ShowAll()
         {
             Clear();
             Console.WriteLine($"{Environment.NewLine}" +
@@ -174,13 +178,11 @@ namespace NewYearGift.Views
                 Console.WriteLine(sweet);    
             }
         }
-
         private void Clear()
         {
             Console.Clear();
             Console.WriteLine("==== Управление сладостями. Введите help - для справки ====");
         }
-
         private void ShowHelp()
         {
             Clear();

@@ -7,16 +7,16 @@ using NewYearGift.Models;
 
 namespace NewYearGift.Views
 {
-    public class GiftView
+    public class GiftView : IItemView<Gift>
     {
         private readonly IGiftService _giftService;
-        private readonly ISweetService _sweetService;
         private readonly IGiftEditorService _giftEditorService;
-        public GiftView(IGiftService giftService, ISweetService sweetService, IGiftEditorService giftEditorService)
+        private readonly IItemView<Sweet> _sweetView;
+        public GiftView(IGiftService giftService, IGiftEditorService giftEditorService, IItemView<Sweet> sweetView)
         {
             _giftService = giftService;
-            _sweetService = sweetService;
             _giftEditorService = giftEditorService;
+            _sweetView = sweetView;
         }
         public void Show()
         {
@@ -29,7 +29,6 @@ namespace NewYearGift.Views
 
                 if (command == "back")
                 {
-                    Program.Clear();
                     break;
                 }
 
@@ -53,7 +52,7 @@ namespace NewYearGift.Views
                     DeleteGift();
                     break;
                 case "show-gifts":
-                    ShowAllGifts();
+                    ShowAll();
                     break;
                 case "show-gift":
                     ShowGift();
@@ -89,7 +88,7 @@ namespace NewYearGift.Views
         }
         private void ShowGift()
         {
-            var gift = SelectGiftById();
+            var gift = SelectById();
             if (gift == null)
             {
                 return;
@@ -99,7 +98,7 @@ namespace NewYearGift.Views
         }
         private void OrderGift()
         {
-            Gift gift = SelectGiftById();
+            Gift gift = SelectById();
             if (gift == null)
             {
                 return;
@@ -122,10 +121,10 @@ namespace NewYearGift.Views
             } while (sortId != -1);
             Clear();
         }
-        private Gift SelectGiftById()
+        public Gift SelectById()
         {
             Clear();
-            ShowAllGifts();
+            ShowAll();
 
             Gift gift = null;
 
@@ -151,7 +150,7 @@ namespace NewYearGift.Views
 
             return gift;
         }
-        private void ShowAllGifts()
+        public void ShowAll()
         {
             Clear();
             Console.WriteLine($"{Environment.NewLine}" +
@@ -172,7 +171,7 @@ namespace NewYearGift.Views
         {
             while (true)
             {
-                var gift = SelectGiftById();
+                var gift = SelectById();
                 if (gift == null)
                 {
                     return;
@@ -184,38 +183,31 @@ namespace NewYearGift.Views
         }
         private void MakeGift()
         {
-            var gift = SelectGiftById();
+            var gift = SelectById();
             if (gift == null)
             {
                 return;
             }
-
-            ShowSweets();
-
-            int sweetId;
+            
+            Sweet sweet = null;
             do
             {
-                Console.Write($"{Environment.NewLine}" +
-                              "Введите id сладости (оставьте строку пустой для отмены ввода или введите -1):");
-                sweetId = int.Parse(Console.ReadLine() ?? "-1");
-
-                var sweetServiceResponse = _sweetService.GetById(sweetId);
-                if (!sweetServiceResponse.IsSuccess)
-                {
-                    ConsoleExtensions.WriteLineError(sweetServiceResponse.Message);
-                    continue;
-                }
-                
+                sweet = _sweetView.SelectById();
                 Console.Write("Введите количество сладостей:");
                 int count = int.Parse(Console.ReadLine() ?? "1");
                 
-                _giftEditorService.Add(gift, new GiftItem()
+                var response = _giftEditorService.Add(gift, new GiftItem()
                 {
-                    Sweet = sweetServiceResponse.Data,
+                    Sweet = sweet,
                     Count = count
                 });
-                
-            } while (sweetId != -1);
+
+                if (!response.IsSuccess)
+                {
+                    ConsoleExtensions.WriteLineError(response.Message);
+                    break;
+                }
+            } while (sweet != null);
         }
         private void AddGift()
         {
@@ -236,21 +228,9 @@ namespace NewYearGift.Views
                 Clear();
             }
         }
-        private void ShowSweets()
-        {
-            Clear();
-            Console.WriteLine($"{Environment.NewLine}" +
-                              "Список доступных сладостей:");
-            var sweetsList = _sweetService.ListAll().Data;
-            
-            foreach (var sweet in sweetsList)
-            {
-                Console.WriteLine(sweet);    
-            }
-        }
         private void SugarRange()
         {
-            var gift = SelectGiftById();
+            var gift = SelectById();
             if (gift == null)
             {
                 return;
