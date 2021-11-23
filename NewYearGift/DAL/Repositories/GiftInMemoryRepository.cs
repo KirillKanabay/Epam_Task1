@@ -52,6 +52,10 @@ namespace NewYearGift.DAL.Repositories
         
         private int GetNewId()
         {
+            if (!_giftsCollection.Any())
+            {
+                return 1;
+            }
             int lastId = _giftsCollection.Keys.Max();
 
             return ++lastId;

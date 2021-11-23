@@ -17,23 +17,19 @@ namespace NewYearGift.Views
             ShowHelp();
             while (true)
             {
-                try
-                {
-                    Console.WriteLine();
-                    Console.Write(">>");
-                    string command = Console.ReadLine();
+                Clear();
+                ShowHelp();
                     
-                    if (command == "back")
-                    {
-                        break;
-                    }
+                Console.WriteLine();
+                Console.Write(">>");
+                string command = Console.ReadLine();
                     
-                    DoCommand(command);
-                }
-                catch (Exception e)
+                if (command == "back")
                 {
-                    ConsoleExtensions.WriteLineError(e.Message);
+                    break;
                 }
+                    
+                DoCommand(command);
             }
         }
         private void DoCommand(string command)
@@ -177,6 +173,9 @@ namespace NewYearGift.Views
             {
                 Console.WriteLine(sweet);    
             }
+
+            Console.WriteLine("\nНажмите любую клавишу чтобы продолжить...");
+            Console.ReadKey();
         }
         private void Clear()
         {
@@ -193,6 +192,7 @@ namespace NewYearGift.Views
                               $"Вернуться в главное меню: back{Environment.NewLine}"+
                               $"Выйти из программы: exit{Environment.NewLine}"
                               );
+            
         }
     }
 }

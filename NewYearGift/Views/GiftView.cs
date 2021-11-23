@@ -23,6 +23,9 @@ namespace NewYearGift.Views
             ShowHelp();
             while (true)
             {
+                Clear();
+                ShowHelp();
+                
                 Console.WriteLine();
                 Console.Write(">>");
                 string command = Console.ReadLine();
@@ -95,6 +98,9 @@ namespace NewYearGift.Views
             }
 
             Console.WriteLine(gift);
+            
+            Console.WriteLine("\nНажмите любую клавишу чтобы продолжить...");
+            Console.ReadKey();
         }
         private void OrderGift()
         {
@@ -119,7 +125,9 @@ namespace NewYearGift.Views
                 sortId = int.Parse(Console.ReadLine() ?? "-1");
                 _giftEditorService.OrderSweetsInGift(gift, (SweetsOrderRule)sortId);
             } while (sortId != -1);
-            Clear();
+            
+            Console.WriteLine("\nНажмите любую клавишу чтобы продолжить...");
+            Console.ReadKey();
         }
         public Gift SelectById()
         {
@@ -166,6 +174,9 @@ namespace NewYearGift.Views
                 Console.WriteLine($"Id:{gift.Id}, Название: {gift.Name}, суммарный вес:{totalWeight} г.," +
                                   $" суммарная стоимость: {totalPrice:C2}");    
             }
+            
+            Console.WriteLine("\nНажмите любую клавишу чтобы продолжить...");
+            Console.ReadKey();
         }
         private void DeleteGift()
         {
@@ -255,6 +266,9 @@ namespace NewYearGift.Views
             {
                 Console.WriteLine(sweet);
             }
+            
+            Console.WriteLine("\nНажмите любую клавишу чтобы продолжить...");
+            Console.ReadKey();
         }
         private void Clear()
         {
