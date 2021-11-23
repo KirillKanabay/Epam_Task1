@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using NewYearGift.BLL.Models;
 using NewYearGift.BLL.Services;
 using NewYearGift.Domain.Models;
@@ -121,18 +122,43 @@ namespace NewYearGift.Views
             do
             {
                 Console.Write($"{Environment.NewLine}" +
-                              "Введите номер сортировки (оставьте строку пустой для отмены ввода или введите -1):");
-                sortId = int.Parse(Console.ReadLine() ?? "-1");
-                _giftEditorService.OrderSweetsInGift(gift, (SweetsOrderRule)sortId);
+                              "Введите номер сортировки (оставьте строку пустой для отмены ввода):");
+
+                string input = Console.ReadLine();
+                
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    break;
+                }
+                
+                if (!int.TryParse(input, out sortId))
+                {
+                    ConsoleExtensions.WriteLineError("Неправильный формат ввода");    
+                }
+                
+                var response = _giftEditorService.OrderSweetsInGift(gift, (SweetsOrderRule)sortId);
+
+                if (!response.IsSuccess)
+                {
+                    ConsoleExtensions.WriteLineError(response.Message);
+                }
+                else
+                {
+                    foreach (var giftItem in response.Data)
+                    {
+                        Console.WriteLine(giftItem);
+                    }
+                }
+                
             } while (sortId != -1);
             
             Console.WriteLine("\nНажмите любую клавишу чтобы продолжить...");
             Console.ReadKey();
         }
-        public Gift SelectById()
+        public Gift SelectById(bool pause = true)
         {
             Clear();
-            ShowAll();
+            ShowAll(pause);
 
             Gift gift = null;
 
@@ -140,10 +166,21 @@ namespace NewYearGift.Views
             do
             {
                 Console.Write($"{Environment.NewLine}" +
-                              "Введите id подарка (оставьте строку пустой для отмены ввода или введите -1):");
-                
-                giftId = int.Parse(Console.ReadLine() ?? "-1");
+                              "Введите id подарка (оставьте строку пустой для отмены ввода):");
 
+                string input = Console.ReadLine();
+                
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    break;
+                }
+                
+                if (!int.TryParse(input, out giftId))
+                {
+                    ConsoleExtensions.WriteLineError("Неправильный формат ввода");
+                    continue;
+                }
+                
                 var response = _giftService.GetById(giftId);
                 if (!response.IsSuccess)
                 {
@@ -158,7 +195,7 @@ namespace NewYearGift.Views
 
             return gift;
         }
-        public void ShowAll()
+        public void ShowAll(bool pause = true)
         {
             Clear();
             Console.WriteLine($"{Environment.NewLine}" +
@@ -174,9 +211,12 @@ namespace NewYearGift.Views
                 Console.WriteLine($"Id:{gift.Id}, Название: {gift.Name}, суммарный вес:{totalWeight} г.," +
                                   $" суммарная стоимость: {totalPrice:C2}");    
             }
-            
-            Console.WriteLine("\nНажмите любую клавишу чтобы продолжить...");
-            Console.ReadKey();
+
+            if (pause)
+            {
+                Console.WriteLine("\nНажмите любую клавишу чтобы продолжить...");
+                Console.ReadKey();
+            }
         }
         private void DeleteGift()
         {
@@ -194,23 +234,37 @@ namespace NewYearGift.Views
         }
         private void MakeGift()
         {
-            var gift = SelectById();
+            var gift = SelectById(false);
             if (gift == null)
             {
                 return;
             }
             
-            Sweet sweet = null;
-            do
+            while (true)
             {
-                sweet = _sweetView.SelectById();
+                Sweet sweet = _sweetView.SelectById(false);
                 Console.Write("Введите количество сладостей:");
-                int count = int.Parse(Console.ReadLine() ?? "1");
+                
+                string input = Console.ReadLine();
+                
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    break;
+                }
+
+                int sweetsCount = 0;
+                
+                if (!int.TryParse(input, out sweetsCount))
+                {
+                    ConsoleExtensions.WriteLineError("Неправильный формат ввода");
+                    continue;
+                }
+
                 
                 var response = _giftEditorService.Add(gift, new GiftItem()
                 {
                     Sweet = sweet,
-                    Count = count
+                    Count = sweetsCount
                 });
 
                 if (!response.IsSuccess)
@@ -218,7 +272,7 @@ namespace NewYearGift.Views
                     ConsoleExtensions.WriteLineError(response.Message);
                     break;
                 }
-            } while (sweet != null);
+            } 
         }
         private void AddGift()
         {
@@ -248,6 +302,7 @@ namespace NewYearGift.Views
             }
 
             Console.Write("Введите начальное содержание сахара:");
+            
             int minWeight = int.Parse(Console.ReadLine());
 
             Console.Write("Введите конечное содержание сахара:");

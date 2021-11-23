@@ -323,6 +323,11 @@ namespace NewYearGift.BLL.Services
 
         private int GetNewId(Gift gift)
         {
+            if (!gift.Items.Any())
+            {
+                return 1;
+            }
+            
             int lastId = gift.Items.Max(giftItem => giftItem.Id);
             return ++lastId;
         }

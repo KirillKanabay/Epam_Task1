@@ -26,5 +26,10 @@ namespace NewYearGift.Domain.Models
         /// Содержит список позиций подарка
         /// </summary>
         public IList<GiftItem> Items { get; }
+
+        public Gift()
+        {
+            Items = new List<GiftItem>();
+        }
     }
 }

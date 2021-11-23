@@ -60,10 +60,10 @@ namespace NewYearGift.Views
                     break;
             }
         }
-        public Sweet SelectById()
+        public Sweet SelectById(bool pause = true)
         {
             Clear();
-            ShowAll();
+            ShowAll(pause);
 
             Sweet sweet = null;
 
@@ -162,7 +162,7 @@ namespace NewYearGift.Views
             }
             Clear();
         }
-        public void ShowAll()
+        public void ShowAll(bool pause = true)
         {
             Clear();
             Console.WriteLine($"{Environment.NewLine}" +
@@ -174,8 +174,11 @@ namespace NewYearGift.Views
                 Console.WriteLine(sweet);    
             }
 
-            Console.WriteLine("\nНажмите любую клавишу чтобы продолжить...");
-            Console.ReadKey();
+            if (pause)
+            {
+                Console.WriteLine("\nНажмите любую клавишу чтобы продолжить...");
+                Console.ReadKey();
+            }
         }
         private void Clear()
         {
