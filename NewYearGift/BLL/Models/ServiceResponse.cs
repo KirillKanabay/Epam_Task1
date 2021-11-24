@@ -1,4 +1,4 @@
-﻿namespace NewYearGift.BLL.Services
+﻿namespace NewYearGift.BLL.Models
 {
     public class ServiceResponse<T>
     {

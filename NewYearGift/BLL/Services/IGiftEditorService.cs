@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using NewYearGift.BLL.Enums;
 using NewYearGift.BLL.Models;
 using NewYearGift.Domain.Models;
 using NewYearGift.Models;

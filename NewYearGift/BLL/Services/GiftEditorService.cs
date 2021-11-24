@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using NewYearGift.BLL.Comparers.Sweets;
+using NewYearGift.BLL.Enums;
 using NewYearGift.BLL.Models;
 using NewYearGift.BLL.Services.Validation;
 using NewYearGift.Domain.Models;

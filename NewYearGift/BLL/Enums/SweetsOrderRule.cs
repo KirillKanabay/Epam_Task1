@@ -1,4 +1,4 @@
-﻿namespace NewYearGift
+﻿namespace NewYearGift.BLL.Enums
 {
     public enum SweetsOrderRule
     {
