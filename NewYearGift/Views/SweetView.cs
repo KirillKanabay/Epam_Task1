@@ -67,25 +67,36 @@ namespace NewYearGift.Views
 
             Sweet sweet = null;
 
-            int sweetId;
-            do
+            while (true)
             {
                 Console.Write($"{Environment.NewLine}" +
-                              "Введите id подарка (оставьте строку пустой для отмены ввода или введите -1):");
-                
-                sweetId = int.Parse(Console.ReadLine() ?? "-1");
+                              "Введите id конфеты (оставьте строку пустой для отмены ввода):");
 
-                var response = _sweetService.GetById(sweetId);
-                if (!response.IsSuccess)
+                var consoleResponse = ConsoleExtensions.ReadInt();
+
+                if (consoleResponse.IsFinishedInput)
                 {
-                    ConsoleExtensions.WriteLineError(response.Message);
+                    break;
+                }
+
+                if (consoleResponse.HasError)
+                {
+                    ConsoleExtensions.WriteLineError(consoleResponse.Error);
+                }
+                
+                int sweetId = consoleResponse.Data;
+                
+                var sweetServiceResponse = _sweetService.GetById(sweetId);
+                if (!sweetServiceResponse.IsSuccess)
+                {
+                    ConsoleExtensions.WriteLineError(sweetServiceResponse.Message);
                 }
                 else
                 {
-                    sweet = response.Data;
+                    sweet = sweetServiceResponse.Data;
                     break;
                 }
-            } while (sweetId != -1);
+            }
 
             return sweet;
         }
@@ -95,14 +106,28 @@ namespace NewYearGift.Views
             while (true)
             {
                 Console.WriteLine($"{Environment.NewLine}" +
-                                      $"Введите номер типа сладости:{Environment.NewLine}" +
+                                      $"Введите номер типа сладости (оставьте строку пустой для отмены ввода):{Environment.NewLine}" +
                                       $"Шоколадная конфета: 1 {Environment.NewLine}" +
                                       $"Леденец: 2 {Environment.NewLine}");
 
                     Console.Write("Тип сладости:");
-                    int type = int.Parse(Console.ReadLine() ?? "");
+
+                    var intConsoleResponse = ConsoleExtensions.ReadInt();
+
+                    if (intConsoleResponse.IsFinishedInput)
+                    {
+                        break;
+                    }
+
+                    if (intConsoleResponse.HasError)
+                    {
+                        ConsoleExtensions.WriteLineError(intConsoleResponse.Error);
+                        continue;
+                    }
+
+                    int sweetType = intConsoleResponse.Data;
                     
-                    Sweet sweet = type switch
+                    Sweet sweet = sweetType switch
                     {
                         1 => new ChocolateSweet(),
                         2 => new Lollipop(),
@@ -122,13 +147,31 @@ namespace NewYearGift.Views
                     sweet.Manufacturer = Console.ReadLine();
 
                     Console.Write("Вес конфеты (грамм):");
-                    sweet.Weight = double.Parse(Console.ReadLine());
+                    var doubleConsoleResponse = ConsoleExtensions.ReadDouble();
+                    if (doubleConsoleResponse.HasError)
+                    {
+                        ConsoleExtensions.WriteLineError(doubleConsoleResponse.Error);
+                        continue;
+                    }
+                    sweet.Weight = doubleConsoleResponse.Data;
 
                     Console.Write("Количество сахара (грамм):");
-                    sweet.SugarWeight = double.Parse(Console.ReadLine());
+                    doubleConsoleResponse = ConsoleExtensions.ReadDouble();
+                    if (doubleConsoleResponse.HasError)
+                    {
+                        ConsoleExtensions.WriteLineError(doubleConsoleResponse.Error);
+                        continue;
+                    }
+                    sweet.SugarWeight = doubleConsoleResponse.Data;
 
                     Console.Write("Стоимость (Br):");
-                    sweet.Price = decimal.Parse(Console.ReadLine());
+                    var decimalConsoleResponse = ConsoleExtensions.ReadDecimal();
+                    if (decimalConsoleResponse.HasError)
+                    {
+                        ConsoleExtensions.WriteLineError(decimalConsoleResponse.Error);
+                        continue;
+                    }
+                    sweet.Price = decimalConsoleResponse.Data;
 
                     if (sweet is ChocolateSweet)
                     {
