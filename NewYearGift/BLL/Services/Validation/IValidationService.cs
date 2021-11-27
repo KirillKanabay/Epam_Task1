@@ -1,7 +1,9 @@
-﻿namespace NewYearGift.BLL.Services.Validation
+﻿using NewYearGift.BLL.Models;
+
+namespace NewYearGift.BLL.Services.Validation
 {
     public interface IValidationService<T>
     {
-        ValidationResponse Validate(T value);
+        ValidationResult Validate(T value);
     }
 }

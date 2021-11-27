@@ -1,4 +1,5 @@
 ﻿using System;
+using NewYearGift.BLL.Models;
 using NewYearGift.Domain.Models;
 using NewYearGift.Models;
 
@@ -12,28 +13,14 @@ namespace NewYearGift.BLL.Services.Validation
             _sweetValidationService = sweetValidationService;
         }
         
-        public ValidationResponse Validate(GiftItem giftItem)
+        public ValidationResult Validate(GiftItem giftItem)
         {
-            var response = new ValidationResponse();
-            
-            if (giftItem.Sweet == null)
-            {
-                response.AppendError("Конфета не может быть null");
-            }
+            var builder = new ValidationResultBuilder<GiftItem>(giftItem);
 
-            var sweetValidationResponse = _sweetValidationService.Validate(giftItem.Sweet);
-
-            if (sweetValidationResponse.HasError)
-            {
-                response.AppendErrorList(sweetValidationResponse.Errors);
-            }
-            
-            if (giftItem.Count <= 0)
-            {
-                response.AppendError("Количество конфет не может быть меньше или равно 0");
-            }
-
-            return response;
+            builder.AppendRule(gi => gi.Sweet != null, "Конфета не может быть пустой")
+                .AppendRule(gi => gi.Count > 0, "Количество конфет не может быть меньше или равно 0");
+                   
+            return builder.Build();
         }
     }
 }

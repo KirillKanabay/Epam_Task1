@@ -1,20 +1,17 @@
 ﻿using System;
+using NewYearGift.BLL.Models;
 using NewYearGift.Domain.Models;
 
 namespace NewYearGift.BLL.Services.Validation
 {
     public class GiftValidationService : IValidationService<Gift>
     {
-        public ValidationResponse Validate(Gift item)
+        public ValidationResult Validate(Gift gift)
         {
-            var response = new ValidationResponse();
-
-            if (string.IsNullOrWhiteSpace(item.Name))
-            {
-                response.AppendError("Имя подарка не может быть пустым");
-            }
-
-            return response;
+            var builder = new ValidationResultBuilder<Gift>(gift);
+            builder.AppendRule(g => !string.IsNullOrWhiteSpace(g.Name), "Имя подарка не может быть пустым");
+            
+            return builder.Build();
         }
     }
 }

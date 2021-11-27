@@ -4,26 +4,16 @@ namespace NewYearGift.BLL.Services.Validation
 {
     public class SugarRangeValidationService : IValidationService<SugarRange>
     {
-        public ValidationResponse Validate(SugarRange sugarRange)
+        public ValidationResult Validate(SugarRange sugarRange)
         {
-            var response = new ValidationResponse();
-            
-            if (sugarRange.MinWeight < 0)
-            {
-                response.AppendError("Минимальный вес сахара не может быть меньше 0\n");
-            }
+            var builder = new ValidationResultBuilder<SugarRange>(sugarRange);
 
-            if (sugarRange.MaxWeight < 0)
-            {
-                response.AppendError("Максимальный вес сахара не может быть меньше 0\n");
-            }
+            builder.AppendRule(sr => sr.MinWeight >= 0, "Минимальный вес сахара не может быть меньше 0")
+                .AppendRule(sr => sr.MaxWeight >= 0, "Максимальный вес сахара не может быть меньше 0")
+                .AppendRule(sr => sr.MinWeight <= sr.MaxWeight, "Минимальный вес сахара не может быть больше максимального");
+                
 
-            if (sugarRange.MinWeight > sugarRange.MaxWeight)
-            {
-                response.AppendError("Минимальный вес сахара не может быть больше максимального\n");
-            }
-
-            return response;
+            return builder.Build();
         }
     }
 }
