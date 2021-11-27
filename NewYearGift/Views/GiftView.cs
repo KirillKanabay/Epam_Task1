@@ -47,23 +47,23 @@ namespace NewYearGift.Views
                 case "help":
                     ShowHelp();
                     break;
-                case "add-gift":
+                case "add":
                     AddGift();
                     break;
-                case "make-gift":
-                    MakeGift();
+                case "build":
+                    BuildGift();
                     break;
-                case "delete-gift":
+                case "delete":
                     DeleteGift();
                     break;
-                case "show-gifts":
+                case "list":
                     ShowAll();
                     break;
-                case "show-gift":
-                    ShowGift();
+                case "sweets":
+                    ShowGiftSweets();
                     break;
-                case "order-gift":
-                    OrderGift();
+                case "order":
+                    OrderSweetsInGift();
                     break;
                 case "sugar-range":
                     SugarRange();
@@ -80,18 +80,18 @@ namespace NewYearGift.Views
         {
             Clear();
             Console.WriteLine($"Доступные команды:{Environment.NewLine}" +
-                              $"Добавить подарок: add-gift{Environment.NewLine}" +
-                              $"Собрать подарок: make-gift{Environment.NewLine}" +
-                              $"Вывести все подарки: show-gifts{Environment.NewLine}" +
-                              $"Вывести все конфеты подарка: show-gift{Environment.NewLine}" +
-                              $"Отсортировать конфеты в подарке: order-gift{Environment.NewLine}"+
+                              $"Добавить подарок: add{Environment.NewLine}" +
+                              $"Собрать подарок: build{Environment.NewLine}" +
+                              $"Вывести все подарки: list{Environment.NewLine}" +
+                              $"Вывести все конфеты подарка: sweets{Environment.NewLine}" +
+                              $"Отсортировать конфеты в подарке: order{Environment.NewLine}"+
                               $"Поиск конфеты по заданному диапазону содержания сахара в подарке: sugar-range{Environment.NewLine}"+
-                              $"Удалить подарок: delete-gift{Environment.NewLine}" +
+                              $"Удалить подарок: delete{Environment.NewLine}" +
                               $"Вернуться в главное меню: back{Environment.NewLine}" +
                               $"Выйти из программы: exit{Environment.NewLine}"
             );
         }
-        private void ShowGift()
+        private void ShowGiftSweets()
         {
             var gift = SelectById();
             if (gift == null)
@@ -104,7 +104,7 @@ namespace NewYearGift.Views
             Console.WriteLine("\nНажмите любую клавишу чтобы продолжить...");
             Console.ReadKey();
         }
-        private void OrderGift()
+        private void OrderSweetsInGift()
         {
             Gift gift = SelectById();
             if (gift == null)
@@ -156,7 +156,7 @@ namespace NewYearGift.Views
             Console.WriteLine("\nНажмите любую клавишу чтобы продолжить...");
             Console.ReadKey();
         }
-        public Gift SelectById(bool pause = true)
+        public Gift SelectById(bool pause = false)
         {
             Clear();
             ShowAll(pause);
@@ -196,7 +196,7 @@ namespace NewYearGift.Views
 
             return gift;
         }
-        public void ShowAll(bool pause = true)
+        public void ShowAll(bool pause = false)
         {
             Clear();
             Console.WriteLine($"{Environment.NewLine}" +
@@ -233,7 +233,7 @@ namespace NewYearGift.Views
                 if (ConsoleExtensions.CheckContinue("Удалить еще одну запись? (y/n):")) break;    
             }
         }
-        private void MakeGift()
+        private void BuildGift()
         {
             var gift = SelectById(false);
             if (gift == null)
