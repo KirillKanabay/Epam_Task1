@@ -172,9 +172,18 @@ namespace NewYearGift.BLL.Services
                 };
             }
 
-            int newId = GetNewId(gift);
-            item.Id = newId;
-            gift.Items.Add(item);
+            var equalGiftItem = gift.Items.FirstOrDefault(gi => gi.Sweet.Id == item.Sweet.Id);
+            
+            if (equalGiftItem != null)
+            {
+                equalGiftItem.Count += item.Count;
+            }
+            else
+            {
+                int newId = GetNewId(gift);
+                item.Id = newId;
+                gift.Items.Add(item);   
+            }
 
             return new ServiceResponse<Gift>()
             {

@@ -18,15 +18,9 @@ namespace NewYearGift.Models
         /// </summary>
         public int Count { get; set; }
 
-        public GiftItem()
+        public override string ToString()
         {
-            
-        }
-        public GiftItem(int id, Sweet sweet, int count)
-        {
-            Id = id;
-            Sweet = sweet;
-            Count = count;
+            return $"{Sweet}, Количество: {Count}";
         }
     }
 }

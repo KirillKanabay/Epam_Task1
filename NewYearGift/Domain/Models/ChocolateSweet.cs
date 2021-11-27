@@ -11,12 +11,6 @@ namespace NewYearGift.Domain.Models
         /// Тип шоколада
         /// </summary>
         public string KindOfChocolate { get; set; }
-
-        public ChocolateSweet()
-        {
-            
-        }
-        public ChocolateSweet(int id, string name) : base(id, name) { }
         
         public override string ToString()
         {

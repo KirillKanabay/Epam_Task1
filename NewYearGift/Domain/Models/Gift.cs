@@ -17,11 +17,12 @@ namespace NewYearGift.Domain.Models
         /// Идентификатор подарка
         /// </summary>
         public int Id { get; set; }
+
         /// <summary>
         /// Название подарка
         /// </summary>
         public string Name { get; set; }
-        
+
         /// <summary>
         /// Содержит список позиций подарка
         /// </summary>
@@ -30,6 +31,17 @@ namespace NewYearGift.Domain.Models
         public Gift()
         {
             Items = new List<GiftItem>();
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var item in Items)
+            {
+                sb.Append(item);
+            }
+
+            return sb.ToString();
         }
     }
 }
