@@ -38,7 +38,7 @@ namespace NewYearGift.Domain.Models
             StringBuilder sb = new StringBuilder();
             foreach (var item in Items)
             {
-                sb.Append(item);
+                sb.AppendLine(item.ToString());
             }
 
             return sb.ToString();

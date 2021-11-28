@@ -32,9 +32,9 @@ namespace NewYearGift.DAL.Repositories
             _sweetsCollection.Add(sweet.Id, sweet);
         }
 
-        public Sweet GetById(int id)
+        public Sweet GetById(int sweetId)
         { 
-            return _sweetsCollection[id];
+            return _sweetsCollection.ContainsKey(sweetId) ? _sweetsCollection[sweetId] : null;
         }
 
         public IReadOnlyList<Sweet> ListAll()

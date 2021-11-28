@@ -19,7 +19,7 @@ namespace NewYearGift.DAL.Repositories
         }
         public Gift GetById(int giftId)
         {
-            return _giftsCollection[giftId];
+            return _giftsCollection.ContainsKey(giftId) ? _giftsCollection[giftId] : null;
         }
         public IReadOnlyList<Gift> ListAll()
         {
