@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace NewYearGift.Helpers
+namespace NewYearGift.Views.Helpers
 {
     public class ConsoleResponse<T>
     {

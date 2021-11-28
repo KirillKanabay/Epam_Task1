@@ -1,6 +1,4 @@
-﻿using NewYearGift.Domain.Models;
-
-namespace NewYearGift.Models
+﻿namespace NewYearGift.Domain.Models
 {
     /// <summary>
     /// Позиция в подарке

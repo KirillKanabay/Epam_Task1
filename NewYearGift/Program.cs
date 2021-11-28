@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using NewYearGift.BLL.Models;
 using NewYearGift.BLL.Services;
+using NewYearGift.BLL.Services.Gifts;
+using NewYearGift.BLL.Services.Sweets;
 using NewYearGift.BLL.Services.Validation;
 using NewYearGift.DAL.Repositories;
 using NewYearGift.Domain.Models;
-using NewYearGift.Helpers;
-using NewYearGift.Models;
 using NewYearGift.Views;
 
 namespace NewYearGift

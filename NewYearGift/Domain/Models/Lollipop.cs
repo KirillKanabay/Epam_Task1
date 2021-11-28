@@ -1,6 +1,4 @@
-﻿using NewYearGift.Models;
-
-namespace NewYearGift.Domain.Models
+﻿namespace NewYearGift.Domain.Models
 {
     /// <summary>
     /// Класс леденца

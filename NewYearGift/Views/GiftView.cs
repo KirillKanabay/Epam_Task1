@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Globalization;
 using NewYearGift.BLL.Enums;
 using NewYearGift.BLL.Models;
 using NewYearGift.BLL.Services;
+using NewYearGift.BLL.Services.Gifts;
 using NewYearGift.Domain.Models;
-using NewYearGift.Helpers;
-using NewYearGift.Models;
+using NewYearGift.Views.Helpers;
 
 namespace NewYearGift.Views
 {

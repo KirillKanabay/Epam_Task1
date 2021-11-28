@@ -5,9 +5,8 @@ using NewYearGift.BLL.Enums;
 using NewYearGift.BLL.Models;
 using NewYearGift.BLL.Services.Validation;
 using NewYearGift.Domain.Models;
-using NewYearGift.Models;
 
-namespace NewYearGift.BLL.Services
+namespace NewYearGift.BLL.Services.Gifts
 {
     public class GiftEditorService : IGiftEditorService
     {

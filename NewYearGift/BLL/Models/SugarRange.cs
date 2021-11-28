@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-
-namespace NewYearGift.BLL.Models
+﻿namespace NewYearGift.BLL.Models
 {
     public readonly struct SugarRange
     {

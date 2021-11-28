@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using NewYearGift.BLL.Enums;
 using NewYearGift.BLL.Models;
 using NewYearGift.BLL.Services.Validation;
 using NewYearGift.DAL.Repositories;
 using NewYearGift.Domain.Models;
 
-namespace NewYearGift.BLL.Services
+namespace NewYearGift.BLL.Services.Sweets
 {
     public class SweetService : ISweetService
     {

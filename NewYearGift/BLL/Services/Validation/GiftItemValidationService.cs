@@ -1,7 +1,5 @@
-﻿using System;
-using NewYearGift.BLL.Models;
+﻿using NewYearGift.BLL.Models;
 using NewYearGift.Domain.Models;
-using NewYearGift.Models;
 
 namespace NewYearGift.BLL.Services.Validation
 {

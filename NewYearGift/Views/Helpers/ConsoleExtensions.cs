@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace NewYearGift.Helpers
+namespace NewYearGift.Views.Helpers
 {
     public static class ConsoleExtensions
     {

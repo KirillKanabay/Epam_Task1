@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NewYearGift.Domain.Models;
 
 namespace NewYearGift.DAL.Repositories

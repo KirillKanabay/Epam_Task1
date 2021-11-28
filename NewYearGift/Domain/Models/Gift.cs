@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using NewYearGift.BLL.Comparers.Sweets;
 using NewYearGift.BLL.Services.Validation;
-using NewYearGift.Models;
 
 namespace NewYearGift.Domain.Models
 {

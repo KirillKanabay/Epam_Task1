@@ -1,7 +1,6 @@
 ﻿using System;
 using NewYearGift.Domain.Models;
-using NewYearGift.Helpers;
-using NewYearGift.Models;
+using NewYearGift.Views.Helpers;
 
 namespace NewYearGift.Views
 {
