@@ -1,7 +1,6 @@
 ﻿using System;
 using NewYearGift.BLL.Enums;
 using NewYearGift.BLL.Models;
-using NewYearGift.BLL.Services;
 using NewYearGift.BLL.Services.Gifts;
 using NewYearGift.Domain.Models;
 using NewYearGift.Views.Helpers;
@@ -56,7 +55,7 @@ namespace NewYearGift.Views
                     DeleteGift();
                     break;
                 case "list":
-                    ShowAll();
+                    ShowAll(pause: true);
                     break;
                 case "sweets":
                     ShowGiftSweets();
@@ -162,24 +161,25 @@ namespace NewYearGift.Views
 
             Gift gift = null;
 
-            int giftId;
-            do
+            while(true)
             {
                 Console.Write($"{Environment.NewLine}" +
                               "Введите id подарка (оставьте строку пустой для отмены ввода):");
 
-                string input = Console.ReadLine();
+                var intConsoleResponse = ConsoleExtensions.ReadInt();
                 
-                if (string.IsNullOrWhiteSpace(input))
+                if (intConsoleResponse.HasError)
+                {
+                    ConsoleExtensions.WriteLineError(intConsoleResponse.Error);
+                    continue;
+                }
+
+                if (intConsoleResponse.IsFinishedInput)
                 {
                     break;
                 }
-                
-                if (!int.TryParse(input, out giftId))
-                {
-                    ConsoleExtensions.WriteLineError("Неправильный формат ввода");
-                    continue;
-                }
+
+                int giftId = intConsoleResponse.Data;
                 
                 var response = _giftService.GetById(giftId);
                 if (!response.IsSuccess)
@@ -191,7 +191,7 @@ namespace NewYearGift.Views
                     gift = response.Data;
                     break;
                 }
-            } while (giftId != -1);
+            }
 
             return gift;
         }
@@ -234,7 +234,7 @@ namespace NewYearGift.Views
         }
         private void BuildGift()
         {
-            var gift = SelectById(false);
+            var gift = SelectById();
             if (gift == null)
             {
                 return;
@@ -243,23 +243,22 @@ namespace NewYearGift.Views
             while (true)
             {
                 Sweet sweet = _sweetView.SelectById(false);
+                
                 Console.Write("Введите количество сладостей:");
-                
-                string input = Console.ReadLine();
-                
-                if (string.IsNullOrWhiteSpace(input))
+                var intConsoleResponse = ConsoleExtensions.ReadInt();
+
+                if (intConsoleResponse.IsFinishedInput)
                 {
                     break;
                 }
-
-                int sweetsCount = 0;
                 
-                if (!int.TryParse(input, out sweetsCount))
+                if (intConsoleResponse.HasError)
                 {
-                    ConsoleExtensions.WriteLineError("Неправильный формат ввода");
+                    ConsoleExtensions.WriteLineError(intConsoleResponse.Error);
                     continue;
                 }
-
+                
+                int sweetsCount = intConsoleResponse.Data;
                 
                 var response = _giftEditorService.Add(gift, new GiftItem()
                 {
@@ -270,9 +269,11 @@ namespace NewYearGift.Views
                 if (!response.IsSuccess)
                 {
                     ConsoleExtensions.WriteLineError(response.Message);
-                    break;
                 }
-            } 
+            }
+            
+            Console.WriteLine("\nНажмите любую клавишу чтобы продолжить...");
+            Console.ReadKey();
         }
         private void AddGift()
         {
@@ -301,25 +302,45 @@ namespace NewYearGift.Views
                 return;
             }
 
-            Console.Write("Введите начальное содержание сахара:");
-            
-            int minWeight = int.Parse(Console.ReadLine());
-
-            Console.Write("Введите конечное содержание сахара:");
-            int maxWeight = int.Parse(Console.ReadLine());
-
-            var sugarRange = new SugarRange(minWeight, maxWeight);
-            
-            var giftEditorResponse = _giftEditorService.GetSweetsBySugarRange(gift, sugarRange);
-            if (!giftEditorResponse.IsSuccess)
+            while (true)
             {
-                ConsoleExtensions.WriteLineError(giftEditorResponse.Message);
-                return;
-            }
+                Console.Write("Введите начальное содержание сахара:");
+                var intConsoleResponse = ConsoleExtensions.ReadInt();
+            
+                if (intConsoleResponse.HasError)
+                {
+                    ConsoleExtensions.WriteLineError(intConsoleResponse.Error);
+                    continue;
+                }
+            
+                int minWeight = intConsoleResponse.Data;
 
-            foreach (var sweet in giftEditorResponse.Data)
-            {
-                Console.WriteLine(sweet);
+                Console.Write("Введите конечное содержание сахара:");
+                intConsoleResponse = ConsoleExtensions.ReadInt();
+            
+                if (intConsoleResponse.HasError)
+                {
+                    ConsoleExtensions.WriteLineError(intConsoleResponse.Error);
+                    continue;
+                }
+            
+                int maxWeight = intConsoleResponse.Data;
+            
+                var sugarRange = new SugarRange(minWeight, maxWeight);
+            
+                var giftEditorResponse = _giftEditorService.GetSweetsBySugarRange(gift, sugarRange);
+                if (!giftEditorResponse.IsSuccess)
+                {
+                    ConsoleExtensions.WriteLineError(giftEditorResponse.Message);
+                    continue;
+                }
+
+                foreach (var sweet in giftEditorResponse.Data)
+                {
+                    Console.WriteLine(sweet);
+                }
+                
+                break;
             }
             
             Console.WriteLine("\nНажмите любую клавишу чтобы продолжить...");
