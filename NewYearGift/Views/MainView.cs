@@ -28,6 +28,7 @@ namespace NewYearGift.Views
                 DoCommand(Console.ReadLine());
             }
         }
+        
         public void Clear()
         {
             Console.Clear();

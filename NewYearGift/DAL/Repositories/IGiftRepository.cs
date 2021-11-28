@@ -27,7 +27,6 @@ namespace NewYearGift.DAL.Repositories
         /// <summary>
         /// Обновление подарка
         /// </summary>
-        /// <param name="id"></param>
         /// <param name="item"></param>
         void Update(Gift item);
         

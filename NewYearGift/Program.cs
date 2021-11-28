@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NewYearGift.BLL.Models;
-using NewYearGift.BLL.Services;
 using NewYearGift.BLL.Services.Gifts;
 using NewYearGift.BLL.Services.Sweets;
 using NewYearGift.BLL.Services.Validation;
@@ -117,7 +115,7 @@ namespace NewYearGift
             _mainView = new MainView(_giftView, _sweetView);
         }
 
-        static void Main(string[] args)
+        static void Main()
         {
             InitDependencies();
 

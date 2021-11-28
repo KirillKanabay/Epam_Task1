@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
-using NewYearGift.BLL.Comparers.Sweets;
-using NewYearGift.BLL.Services.Validation;
 
 namespace NewYearGift.Domain.Models
 {
