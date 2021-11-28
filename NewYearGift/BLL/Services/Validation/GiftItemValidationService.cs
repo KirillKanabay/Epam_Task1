@@ -5,12 +5,6 @@ namespace NewYearGift.BLL.Services.Validation
 {
     public class GiftItemValidationService : IValidationService<GiftItem>
     {
-        private readonly IValidationService<Sweet> _sweetValidationService;
-        public GiftItemValidationService(IValidationService<Sweet> sweetValidationService)
-        {
-            _sweetValidationService = sweetValidationService;
-        }
-        
         public ValidationResult Validate(GiftItem giftItem)
         {
             var builder = new ValidationResultBuilder<GiftItem>(giftItem);

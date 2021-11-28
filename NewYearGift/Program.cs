@@ -105,7 +105,7 @@ namespace NewYearGift
 
             _sweetValidationService = new SweetValidationService();
             _giftValidationService = new GiftValidationService();
-            _giftItemValidationService = new GiftItemValidationService(_sweetValidationService);
+            _giftItemValidationService = new GiftItemValidationService();
             _sugarRangeValidationService = new SugarRangeValidationService();
             
             _giftService = new GiftService(_giftRepository, _giftValidationService);
