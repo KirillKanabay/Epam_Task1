@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NewYearGift.Domain.Models;
 
 namespace NewYearGift.BLL.Comparers.Sweets
 {
-    /// <summary>
-    /// Компоратор конфет по количеству сахара
-    /// </summary>
-    public sealed class SweetSugarComparer : IComparer<Sweet>
+    public class SweetManufacturerComparer : IComparer<Sweet>
     {
         public int Compare(Sweet sweet1, Sweet sweet2)
         {
@@ -14,7 +12,7 @@ namespace NewYearGift.BLL.Comparers.Sweets
             if (ReferenceEquals(null, sweet2)) return 1;
             if (ReferenceEquals(null, sweet1)) return -1;
             
-            return sweet1.SugarWeight.CompareTo(sweet2.SugarWeight);
+            return string.Compare(sweet1.Manufacturer, sweet2.Manufacturer, StringComparison.CurrentCulture);
         }
     }
 }

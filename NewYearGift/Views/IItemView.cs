@@ -2,7 +2,7 @@
 {
     public interface IItemView<out T> : IView
     {
-        T SelectById(bool pause);
+        T SelectById();
         void ShowAll(bool pause);
     }
 }

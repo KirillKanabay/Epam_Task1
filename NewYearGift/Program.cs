@@ -34,7 +34,7 @@ namespace NewYearGift
               {
                   Id = 2,
                   Name = "Черемуха",
-                  Manufacturer = "Коммунарка",
+                  Manufacturer = "Спартак",
                   Weight = 12.4d,
                   SugarWeight = 3.5d,
                   Price = 0.45m,

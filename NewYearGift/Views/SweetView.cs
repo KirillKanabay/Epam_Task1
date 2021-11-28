@@ -41,17 +41,17 @@ namespace NewYearGift.Views
                     Clear();
                     ShowHelp();
                     break;
-                case "add-sweet":
+                case "add":
                     Clear();
                     AddSweet();
                     break;
-                case "delete-sweet":
+                case "delete":
                     Clear();
                     DeleteSweet();
                     break;
-                case "show-sweets":
+                case "list":
                     Clear();
-                    ShowAll();
+                    ShowAll(pause: true);
                     break;
                 case "exit":
                     Environment.Exit(0);
@@ -61,10 +61,10 @@ namespace NewYearGift.Views
                     break;
             }
         }
-        public Sweet SelectById(bool pause = true)
+        public Sweet SelectById()
         {
             Clear();
-            ShowAll(pause);
+            ShowAll();
 
             Sweet sweet = null;
 
@@ -198,15 +198,24 @@ namespace NewYearGift.Views
         }
         private void DeleteSweet()
         {
-            var sweet = SelectById();
-            var response = _sweetService.Delete(sweet);
-            if (!response.IsSuccess)
+            while (true)
             {
-                ConsoleExtensions.WriteLineError(response.Message);
+                var sweet = SelectById();
+                if (sweet == null)
+                {
+                    return;
+                }
+                var response = _sweetService.Delete(sweet);
+                if (!response.IsSuccess)
+                {
+                    ConsoleExtensions.WriteLineError(response.Message);
+                    continue;
+                }    
+                
+                if (!ConsoleExtensions.CheckContinue("Удалить еще одну запись? (y/n):")) break;
             }
-            Clear();
         }
-        public void ShowAll(bool pause = true)
+        public void ShowAll(bool pause = false)
         {
             Clear();
             Console.WriteLine($"{Environment.NewLine}" +
@@ -233,9 +242,9 @@ namespace NewYearGift.Views
         {
             Clear();
             Console.WriteLine($"Доступные команды:{Environment.NewLine}" +
-                              $"Добавить сладость: add-sweet{Environment.NewLine}"+
-                              $"Удалить сладость: delete-sweet{Environment.NewLine}"+
-                              $"Вывести все сладости: show-sweets{Environment.NewLine}"+
+                              $"Добавить сладость: add{Environment.NewLine}"+
+                              $"Удалить сладость: delete{Environment.NewLine}"+
+                              $"Вывести все сладости: list{Environment.NewLine}"+
                               $"Вернуться в главное меню: back{Environment.NewLine}"+
                               $"Выйти из программы: exit{Environment.NewLine}"
                               );

@@ -91,8 +91,8 @@ namespace NewYearGift.BLL.Services.Gifts
                 };
             }
 
-            var sweets = gift.Items.Where(giftItem => giftItem.Sweet.Weight >= sugarRange.MinWeight
-                                                      && giftItem.Sweet.Weight <= sugarRange.MaxWeight)
+            var sweets = gift.Items.Where(giftItem => giftItem.Sweet.SugarWeight >= sugarRange.MinWeight
+                                                      && giftItem.Sweet.SugarWeight <= sugarRange.MaxWeight)
                 .Select(giftItem => giftItem.Sweet);
 
             return new ServiceResponse<IEnumerable<Sweet>>()
@@ -115,11 +115,12 @@ namespace NewYearGift.BLL.Services.Gifts
 
             IComparer<Sweet> comparer = sweetsOrderRule switch
             {
-                SweetsOrderRule.Name        => new SweetNameComparer(),
-                SweetsOrderRule.Price       => new SweetPriceComparer(),
-                SweetsOrderRule.Weight      => new SweetWeightComparer(),
-                SweetsOrderRule.SugarWeight => new SweetSugarComparer(),
-                _                           => null,
+                SweetsOrderRule.Name         => new SweetNameComparer(),
+                SweetsOrderRule.Manufacturer => new SweetManufacturerComparer(),
+                SweetsOrderRule.Price        => new SweetPriceComparer(),
+                SweetsOrderRule.Weight       => new SweetWeightComparer(),
+                SweetsOrderRule.SugarWeight  => new SweetSugarComparer(),
+                _                            => null,
             };
 
             if (comparer == null)
