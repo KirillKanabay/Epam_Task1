@@ -27,14 +27,14 @@ namespace NewYearGift.BLL.Services.Gifts
                 };
             }
 
-            var validationResponse = _giftValidationService.Validate(gift);
+            var giftValidationResult = _giftValidationService.Validate(gift);
 
-            if (validationResponse.HasError)
+            if (giftValidationResult.HasError)
             {
                 return new ServiceResponse<Gift>()
                 {
                     IsSuccess = false,
-                    Message = validationResponse.Error,
+                    Message = giftValidationResult.Error,
                 };
             }
             
@@ -43,7 +43,6 @@ namespace NewYearGift.BLL.Services.Gifts
             return new ServiceResponse<Gift>()
             {
                 IsSuccess = true,
-                Message = "Подарок успешно добавлен",
                 Data = gift,
             };
         }
@@ -95,6 +94,17 @@ namespace NewYearGift.BLL.Services.Gifts
                 {
                     IsSuccess = false,
                     Message = "Подарок не может быть NULL",
+                };
+            }
+            
+            var giftValidationResult = _giftValidationService.Validate(gift);
+
+            if (giftValidationResult.HasError)
+            {
+                return new ServiceResponse<Gift>()
+                {
+                    IsSuccess = false,
+                    Message = giftValidationResult.Error,
                 };
             }
             

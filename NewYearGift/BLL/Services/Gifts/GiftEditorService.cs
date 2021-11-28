@@ -12,9 +12,9 @@ namespace NewYearGift.BLL.Services.Gifts
     {
         private readonly IValidationService<SugarRange> _sugarRangeValidationService;
         private readonly IValidationService<GiftItem> _giftItemValidationService;
+        
         public GiftEditorService(IValidationService<SugarRange> sugarRangeValidationService,
                                 IValidationService<GiftItem> giftItemValidationService)
-        
         {
             _sugarRangeValidationService = sugarRangeValidationService;
             _giftItemValidationService = giftItemValidationService;
@@ -81,12 +81,12 @@ namespace NewYearGift.BLL.Services.Gifts
                 };
             }
 
-            var validationResponse = _sugarRangeValidationService.Validate(sugarRange);
-            if (validationResponse.HasError)
+            var sugarRangeValidationResult = _sugarRangeValidationService.Validate(sugarRange);
+            if (sugarRangeValidationResult.HasError)
             {
                 return new ServiceResponse<IEnumerable<Sweet>>()
                 {
-                    Message = validationResponse.Error,
+                    Message = sugarRangeValidationResult.Error,
                     IsSuccess = false,
                 };
             }
@@ -161,14 +161,14 @@ namespace NewYearGift.BLL.Services.Gifts
                 };
             }
 
-            var giftItemValidationResponse = _giftItemValidationService.Validate(item);
+            var giftItemValidationResult = _giftItemValidationService.Validate(item);
 
-            if (giftItemValidationResponse.HasError)
+            if (giftItemValidationResult.HasError)
             {
                 return new ServiceResponse<Gift>()
                 {
                     IsSuccess = false,
-                    Message = giftItemValidationResponse.Error,
+                    Message = giftItemValidationResult.Error,
                 };
             }
 
@@ -212,14 +212,14 @@ namespace NewYearGift.BLL.Services.Gifts
                 };
             }
             
-            var giftItemValidationResponse = _giftItemValidationService.Validate(item);
+            var giftItemValidationResult = _giftItemValidationService.Validate(item);
 
-            if (giftItemValidationResponse.HasError)
+            if (giftItemValidationResult.HasError)
             {
                 return new ServiceResponse<Gift>()
                 {
                     IsSuccess = false,
-                    Message = giftItemValidationResponse.Error,
+                    Message = giftItemValidationResult.Error,
                 };
             }
             

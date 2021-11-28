@@ -28,14 +28,14 @@ namespace NewYearGift.BLL.Services.Sweets
                 };
             }
 
-            var validationResponse = _sweetValidationService.Validate(sweet);
+            var sweetValidationResult = _sweetValidationService.Validate(sweet);
 
-            if (validationResponse.HasError)
+            if (sweetValidationResult.HasError)
             {
                 return new ServiceResponse<Sweet>()
                 {
                     IsSuccess = false,
-                    Message = validationResponse.Error,
+                    Message = sweetValidationResult.Error,
                 };
             }
             
@@ -96,6 +96,17 @@ namespace NewYearGift.BLL.Services.Sweets
                 {
                     IsSuccess = false,
                     Message = "Конфета не может быть NULL",
+                };
+            }
+            
+            var sweetValidationResult = _sweetValidationService.Validate(sweet);
+
+            if (sweetValidationResult.HasError)
+            {
+                return new ServiceResponse<Sweet>()
+                {
+                    IsSuccess = false,
+                    Message = sweetValidationResult.Error,
                 };
             }
             
