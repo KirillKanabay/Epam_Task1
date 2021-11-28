@@ -24,7 +24,7 @@ namespace NewYearGift.BLL.Services.Sweets
                 return new ServiceResponse<Sweet>()
                 {
                     IsSuccess = false,
-                    Message = "Конфета не может быть NULL",
+                    Message = "Конфета не может быть пустой",
                 };
             }
 
@@ -95,7 +95,7 @@ namespace NewYearGift.BLL.Services.Sweets
                 return new ServiceResponse<Sweet>()
                 {
                     IsSuccess = false,
-                    Message = "Конфета не может быть NULL",
+                    Message = "Конфета не может быть пустой",
                 };
             }
             
@@ -126,7 +126,7 @@ namespace NewYearGift.BLL.Services.Sweets
                 return new ServiceResponse<Sweet>()
                 {
                     IsSuccess = false,
-                    Message = "Конфета не может быть NULL",
+                    Message = "Конфета не может быть пустой",
                 };
             }
             

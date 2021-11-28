@@ -27,7 +27,7 @@ namespace NewYearGift.BLL.Services.Gifts
                 return new ServiceResponse<GiftItem>()
                 {
                     IsSuccess = false,
-                    Message = "Подарок не может быть NULL",
+                    Message = "Подарок не может быть пустым",
                 };
             }
 
@@ -57,14 +57,13 @@ namespace NewYearGift.BLL.Services.Gifts
                 return new ServiceResponse<IEnumerable<GiftItem>>()
                 {
                     IsSuccess = false,
-                    Message = "Подарок не может быть NULL",
+                    Message = "Подарок не может быть пустым",
                 };
             }
             
             return new ServiceResponse<IEnumerable<GiftItem>>()
             {
                 IsSuccess = true,
-                Message = "Список элементов подарка",
                 Data = gift.Items,
             };
         }
@@ -76,7 +75,7 @@ namespace NewYearGift.BLL.Services.Gifts
                 return new ServiceResponse<IEnumerable<Sweet>>()
                 {
                     IsSuccess = false,
-                    Message = "Подарок не может быть NULL",
+                    Message = "Подарок не может быть пустым",
                     Data = null
                 };
             }
@@ -109,7 +108,7 @@ namespace NewYearGift.BLL.Services.Gifts
                 return new ServiceResponse<IEnumerable<GiftItem>>()
                 {
                     IsSuccess = false,
-                    Message = "Подарок не может быть NULL",
+                    Message = "Подарок не может быть пустым",
                 };
             }
 
@@ -148,7 +147,7 @@ namespace NewYearGift.BLL.Services.Gifts
                 return new ServiceResponse<Gift>()
                 {
                     IsSuccess = false,
-                    Message = "Подарок не может быть NULL",
+                    Message = "Подарок не может быть пустым",
                 };
             }
 
@@ -157,7 +156,7 @@ namespace NewYearGift.BLL.Services.Gifts
                 return new ServiceResponse<Gift>()
                 {
                     IsSuccess = false,
-                    Message = "Элемент подарка не может быть NULL",
+                    Message = "Элемент подарка не может быть пустым",
                 };
             }
 
@@ -199,7 +198,7 @@ namespace NewYearGift.BLL.Services.Gifts
                 return new ServiceResponse<Gift>()
                 {
                     IsSuccess = false,
-                    Message = "Подарок не может быть NULL",
+                    Message = "Подарок не может быть пустым",
                 };
             }
 
@@ -208,7 +207,7 @@ namespace NewYearGift.BLL.Services.Gifts
                 return new ServiceResponse<Gift>()
                 {
                     IsSuccess = false,
-                    Message = "Элемент подарка не может быть NULL",
+                    Message = "Элемент подарка не может быть пустым",
                 };
             }
             
@@ -249,7 +248,7 @@ namespace NewYearGift.BLL.Services.Gifts
                 return new ServiceResponse<Gift>()
                 {
                     IsSuccess = false,
-                    Message = "Подарок не может быть NULL",
+                    Message = "Подарок не может быть пустым",
                 };
             }
             
@@ -258,7 +257,7 @@ namespace NewYearGift.BLL.Services.Gifts
                 return new ServiceResponse<Gift>()
                 {
                     IsSuccess = false,
-                    Message = "Элемент подарка не может быть NULL",
+                    Message = "Элемент подарка не может быть пустым",
                 };
             }
             
@@ -278,7 +277,7 @@ namespace NewYearGift.BLL.Services.Gifts
                 return new ServiceResponse<int>()
                 {
                     IsSuccess = false,
-                    Message = "Подарок не может быть NULL",
+                    Message = "Подарок не может быть пустым",
                 };
             }
 
@@ -298,7 +297,7 @@ namespace NewYearGift.BLL.Services.Gifts
                 return new ServiceResponse<double>()
                 {
                     IsSuccess = false,
-                    Message = "Подарок не может быть NULL",
+                    Message = "Подарок не может быть пустым",
                 };
             }
 
@@ -318,7 +317,7 @@ namespace NewYearGift.BLL.Services.Gifts
                 return new ServiceResponse<decimal>()
                 {
                     IsSuccess = false,
-                    Message = "Подарок не может быть NULL",
+                    Message = "Подарок не может быть пустым",
                 };
             }
 
